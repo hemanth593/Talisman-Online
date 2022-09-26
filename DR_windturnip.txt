@@ -1,0 +1,17 @@
+//all attack chars on DR first boss
+//This will only allow your char to stop moving from one spot once you set desired position that makes u not moved 
+//Use this along with https://github.com/hemanth593/Talisman-Online/blob/main/auto_rev_upatk.txt for better results 
+// resolution 1024x768
+set $healingpot 2  //put sitting mana/healing pots in $2  use mana pots for mana chars and HP pots for stamina  chars
+if_not 648, 42 14083980 14083980   // if boss missing 
+    send F1
+    wait 20s
+    repeat 2
+        send $healingpot
+        wait 15s
+    end_repeat
+    send tab
+    while_not 648, 42 14083980 14083980 // search until boss(WindTurnip) is found 
+        send tab
+    end_while
+end_if
