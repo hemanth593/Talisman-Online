@@ -1,0 +1,388 @@
+//BC bot tamer
+//resolution 1024x768 
+repeat 5
+set #handle findwindow (8604)
+set $mount 4  //mount is on number 4 
+set $attack 67890  //attack
+set $telecharm 5
+set $petfood 1
+set $healingpotion 3
+set SendExDelay 10
+//screen adjustments
+wait 1s
+repeat 3
+    left 997, 97
+    end_repeat
+left 864, 55
+wait 1s
+//INvisiblemode
+send_down F12
+sendex_down @
+send_up F12
+sendex_up @
+sendex
+
+// invite team
+:team
+send F  500
+//left 708, 198
+left 626, 187
+wait 500
+right 577, 272
+wait 500
+left 623, 344
+wait 500
+send F 500
+//cura
+wait 1s
+repeat 3
+    send_down {down}
+  wait 1s
+    end_repeat
+left 867, 53
+wait 1s
+//go to vastmountain
+repeat 18
+double_right 463, 474
+end_repeat
+wait 1s
+left 307, 552
+wait 2s
+//user mount
+send $mount
+wait 3s
+// sell//
+double_right 300, 220
+double_right 300, 220
+double_right 280, 193
+double_right 290, 270
+double_right 256, 190
+double_right 277, 250
+double_right 300, 220
+double_right 300, 220
+double_right 300, 220
+double_right 307, 207
+double_right 322, 255
+double_right 322, 255
+double_right 300, 220
+wait 2s
+left 267, 409
+wait 2s
+repeat 3
+left 450, 326
+wait 100
+left 445, 325
+wait 100
+    end_repeat
+left 488, 714
+wait 2s
+//get inside cave
+double_right  473, 377
+double_right  473, 377
+double_right  473, 377
+double_right  473, 377
+double_right  481, 426
+double_right  470, 332
+double_right  515, 365
+double_right  464, 411
+double_right  479, 372
+wait 1s
+double_right  473, 377
+double_right  473, 377
+double_right  473, 377
+double_right  473, 377
+double_right  470, 332
+double_right  515, 365
+double_right  464, 411
+double_right  479, 372
+wait 1s
+double_right  473, 377
+double_right  473, 377
+double_right  473, 377
+double_right  473, 377
+double_right  470, 332
+double_right  515, 365
+double_right  464, 411
+double_right  479, 372
+wait 1s
+left 317, 381
+wait 1s
+left 978, 56
+wait 500
+left 594, 415
+left 359, 273
+wait 10s
+
+repeat 4
+left 359, 273
+wait 5s
+
+end_repeat
+left 407, 537
+wait 1s
+double_right 467, 417
+double_right 471, 394
+double_right 479, 377
+double_right 479, 362
+double_right 486, 390
+double_right 479, 393
+double_right 508, 405
+wait 1s
+left 266, 366
+wait 2s
+//leave the team
+right 50, 52
+wait 500
+left 104, 94
+wait 500
+//walk inside cave pt1
+
+//send $mount
+//wait 1s
+//send $healingpotion 1500
+//wait 15s
+//send $mount
+//wait 2s
+
+right 874, 105
+wait 2200
+right  883, 78
+wait 2200
+right  871, 98
+wait 2200
+right 883, 74
+wait 2200
+right 908, 76
+wait 2200
+right  885, 79
+wait 2200
+right 884, 78
+wait 2200
+right  915, 70
+wait 2200
+right  901, 83
+wait 2200
+right  885, 85
+wait 2200
+right 864, 108
+wait 2200
+right  870, 142
+wait 2200
+right   873, 152
+wait 2200
+right 863, 96
+wait 2200
+right 865, 89
+wait 2200
+right  868, 116
+wait 2200
+right 871, 125
+wait 2200
+right  861, 101
+wait 2200
+right  868, 130
+wait 2200
+right 877, 152
+wait 2200
+right 880, 159
+wait 2200
+right 894, 163
+wait 2200
+right 914, 164
+wait 2200
+right  887, 165
+wait 2200
+right 888, 157
+wait 2200
+right  906, 144
+wait 2200
+right 955, 146
+wait 2200
+right 948, 157
+wait 2200
+right  956, 152
+wait 2200
+right 959, 145
+wait 2200
+right 905, 163
+wait 2200
+right 892, 164
+wait 2200
+right 958, 148
+wait 2200
+right  958, 144
+wait 2200
+right 955, 152
+wait 2200
+right  950, 158
+wait 2200
+right  940, 161
+wait 2200
+right  964, 122
+wait 2200
+right  970, 110
+wait 2200
+right 964, 92
+wait 2200
+right  938, 63
+wait 2200
+right 905, 78
+wait 2200
+right 951, 89
+wait 2200
+right 968, 103
+wait 2200
+right 951, 157
+wait 2200
+right 948, 157
+wait 2200
+right  967, 124
+wait 2200
+right 970, 91
+wait 2200
+right  950, 72
+wait 2200
+right  957, 80
+wait 2200
+right  944, 65
+wait 2200
+right 921, 67
+wait 2200
+right 928, 71
+wait 2200
+right  884, 76
+wait 2200
+right  883, 75
+wait 2200
+right 874, 84
+wait 2200
+right 869, 115
+wait 2200
+right  861, 117
+wait 2200
+right  884, 111
+wait 2200
+right  923, 68
+wait 2200
+right  918, 75
+wait 2200
+right  863, 114
+wait 2200
+right 869, 113
+wait 2200
+right 876, 116
+wait 2200
+right 874, 116
+wait 2200
+right 919, 166
+wait 2200
+right 918, 166
+wait 2200
+right  961, 115
+wait 2200
+right 915, 144
+wait 2200
+right  915, 153
+wait 2200
+right  963, 112
+wait 2200
+right 940, 113
+wait 2200
+right  964, 113
+wait 2200
+right 917, 58
+wait 2200
+right 888, 116
+wait 2200
+right 895, 116
+wait 2200
+//enter the npc
+double_right 239, 263
+double_right 230, 202
+double_right 219, 296
+double_right 227, 193
+double_right 198, 241
+double_right 223, 293
+double_right 293, 256
+double_right 119, 237
+double_right 233, 299
+double_right 267, 236
+double_right 210, 222
+double_right 296, 247
+double_right 255, 158
+wait 1s
+double_right 239, 263
+double_right 230, 202
+double_right 219, 296
+double_right 227, 193
+double_right 198, 241
+double_right 223, 293
+double_right 293, 256
+double_right 119, 237
+double_right 233, 299
+double_right 267, 236
+double_right 210, 222
+double_right 296, 247
+double_right 255, 158
+end_if
+wait 1s
+left 278, 332
+//send 6
+wait 3s
+// boss path
+left 680, 475
+wait 2200
+right 879, 112
+wait 1s
+right 887, 114
+wait 1s
+right 887, 114
+wait 1s
+right 887, 114
+wait 1s
+right 887, 114
+wait 1s
+right 887, 114
+wait 1s
+right 887, 114
+wait 1s
+right 887, 114
+wait 1s
+right 887, 114
+wait 1s
+right 887, 114
+wait 3s
+send $mount
+ //attack
+repeat 20
+send tab 500
+set timer 0
+while timer < 5000
+send $attack
+end_while
+end_repeat 18
+
+
+
+send I
+set #startX 5
+set #startY 7
+set #endX 1008
+set #endY 718
+set %color[1]5391624  //courage
+set #size  size(%color)
+hint #size
+for #i 1 #size 2
+    set #a findcolor (#startX #startY #endX #endY (%color[#i])%arr workwindow)
+    if #a > 0
+        double_right %arr[1 1] %arr[1 2]
+        wait 500
+        end_if
+        send I
+        wait 1s
+send $telecharm
+wait 5s
+end_for
+end_repeat
+send $petfood
+wait 1s
