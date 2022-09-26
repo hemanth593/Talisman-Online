@@ -1,0 +1,2 @@
+//fairy 6 = heal 7=rev 8=superskill
+send 678678678678 
