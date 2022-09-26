@@ -1,5 +1,5 @@
 //resolution 1024x768
-//yanshy for sin
+//yanshy for sin tank mode only 
 while 192, 55 41984 41984
     send F5 1000
 end_while
