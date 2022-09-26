@@ -1,0 +1,274 @@
+//This is for Lw first boss quest , hellprint collection and Superskill together 
+//Make sure to have atleast 10 slots empty before proceeding .
+//put aoeskill on 7 ,normal attack on 6  ,stonecitycharm on 5 , mount on 4
+//Make sure pet is opened before starting script
+//requirements +10 mount
+//resolution 1024x768 with no unlimited zoom (Note : if you are unsure what to do just reinstall game to different drive/path to solve this)
+//please read out line 12 and 13 to set based on your chars
+set #handle findwindow (Talisman Online)
+ShowWindow workwindow RESTORE
+set SendExDelay 10
+set $telecharm 5
+set $aoeattack 361361361              //aoe skills for each char [tamer 67890] [wizz 363636 3= burst 6=stunaoe] [simi 666666 ]
+set $attack 11111111111                //single attack tamer 67890 wizz 66666 sin simi 77777
+set $minimizeMap 996, 124
+set $viewReset 865, 58
+set $mount 4
+set $surroundingsIcon 976, 58
+set $surroundingsInput 568, 540
+set $moondragonPandaLocation 412, 265
+set $moonDragonPanda 484, 396
+set $moonDragonVillage 322, 338
+set $surroundingsEsc 603, 162
+set $mysticBelieverLocation 306, 262
+set $mysticBeliever 474, 411
+set $enterLW  475, 380
+set $lwquest 313, 333
+set $Gentleman 471, 388
+set $Gentlemanlocation 334, 264
+set $questAccept 309, 655
+set $seekforghostquest 308, 405
+set $Immortallee 706, 157
+set $quest2 442, 500
+set $ArcaneWarrior  477, 359
+set $stronenergycharm 199, 294
+set $Purchaseitem   290, 428
+set $buy 202, 712
+send $telecharm
+gosub stonecity
+gosub lwquest
+gosub lwcave
+gosub stonecity
+gosub lwqivequest
+gosub stonecitygentleman
+stop_script
+
+
+
+:stonecity
+wait 1s
+//HideIdentity
+send_down F12
+sendex_down @
+send_up F12
+sendex_up @
+sendex
+//Viewreset
+left $viewReset
+repeat 5
+    left $minimizeMap
+    send_down {down} 1000
+end_repeat
+//Invite  Team
+//:team
+//send $openfriendlist 500
+//left 708, 198
+//left $foelist   //foelist
+//wait 500
+//right $invitename
+//wait 500
+//left $teamup
+//wait 500
+//send F 500          //to accept team request it needss to be run from other script to avoid any conflicts
+//Go to MDV
+send $mount
+wait 2s
+left $surroundingsIcon
+left $surroundingsInput
+send Panda
+wait 3s
+left $moondragonPandaLocation
+left $surroundingsEsc
+wait 30s
+repeat 8
+    right $moonDragonPanda
+end_repeat
+left $moonDragonVillage
+wait 5s
+//Go to Mystic Believer
+left $surroundingsIcon
+left $surroundingsInput
+send Mystic
+wait 3s
+left $mysticBelieverLocation
+left $surroundingsEsc
+wait 15s
+send $mount
+return
+
+
+
+
+
+:lwquest
+ repeat 8
+        right $mysticBeliever
+ end_repeat
+ wait 2s
+ left $lwquest
+ wait 1s
+ left 314, 657 //lw quest accept
+ wait 1s
+ send $telecharm
+ return
+
+
+
+:lwcave
+ wait 3s
+ repeat 3
+    right 475, 447
+ end_repeat
+left 477, 601
+wait 1s
+left 473, 319
+wait 1s
+left 327, 451 //enter Ancient Laurel Ground from transport fay
+wait 2s
+send $mount //mount
+wait 3s
+left $viewreset //view reset
+left $surroundingsIcon //surroundings
+left 554, 543
+send Scrapped
+left 370, 258 //Autopath to Scrapped Machine man
+wait 40s
+left $surroundingsEsc
+repeat 8
+    right $enterLW
+end_repeat
+wait 2s
+left 310, 365    //Entered into cave
+wait 5s         //Moving in cave
+right 914, 92
+wait 5s
+right 928, 95
+wait 5s
+right 936, 96
+wait 5s
+right 956, 93
+wait 8s
+right 903, 61
+wait 8s
+right 903, 97
+wait 8s
+right 891, 100
+wait 8s
+right 882, 120
+wait 8s
+right 893, 146
+wait 8s
+send $mount 1000
+set timer 0
+while timer < 90000
+    send tab 1000
+    send $aoeattack
+end_while
+send $telecharm
+wait 3s
+return
+
+
+
+:lwqivequest
+ repeat 8
+        right $mysticBeliever
+ end_repeat
+ wait 2s
+ left 302, 333
+ wait 1s
+ left 307, 655
+ wait 2s
+ send $telecharm
+return
+
+:stonecitygentleman
+//send $telecharm
+wait 2s
+//HideIdentity
+send_down F12
+sendex_down @
+send_up F12
+sendex_up @
+sendex
+//Viewreset
+left $viewReset
+repeat 5
+    left $minimizeMap
+    send_down {down} 1000
+end_repeat
+//
+send $mount
+wait 2s
+left $surroundingsIcon
+left $surroundingsInput
+send Gentle
+wait 3s
+left $Gentlemanlocation
+left $surroundingsEsc
+wait 30s
+repeat 8
+    right $Gentleman
+end_repeat
+wait 2s
+left $seekforghostquest
+wait 2s
+left $questAccept
+wait 2s
+send ESC
+wait 1s
+repeat 8
+    right $Gentleman
+end_repeat
+left $seekforghostquest
+wait 2s
+left $questAccept
+wait 2s
+left $surroundingsIcon
+left $surroundingsInput
+send Ascetic
+wait 3s
+left $Gentlemanlocation
+left $surroundingsEsc
+wait 7s
+repeat 8
+    right $Immortallee
+end_repeat
+wait 2s
+left $Purchaseitem
+wait 2s
+repeat 6
+    left $stronenergycharm
+    wait 1s
+end_repeat
+left $buy
+wait 2s
+left $surroundingsIcon
+left $surroundingsInput
+send Arcane
+wait 3s
+left $Gentlemanlocation
+left $surroundingsEsc
+wait 7s
+repeat 8
+    right $ArcaneWarrior
+end_repeat
+wait 2s
+left 476, 604
+wait 1s
+left $quest2
+wait 2s
+left $questAccept
+wait 2s
+send ESC
+wait 1s
+repeat 8
+    right $ArcaneWarrior
+end_repeat
+wait 1s
+left 474, 315
+wait 1s
+left 352, 616
+wait 1s
+left $questAccept
+return
