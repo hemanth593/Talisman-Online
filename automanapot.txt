@@ -1,0 +1,8 @@
+//resolution 1024x768
+//fighting mana pots use only when 20% mana left until 90% filled
+set $fightingmanapot 5
+if_not 90, 54 10572032 10572032
+    while_not 201, 54 10572032 10572032
+        send $fightingmanapot
+    end_while
+end_if
