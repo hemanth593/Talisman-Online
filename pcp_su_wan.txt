@@ -1,0 +1,11 @@
+//tamer
+//resolution 1024x768
+set $skill 67890  //replace 67890 with your desired skill for wizz/monk/fairy/sin use primary skill as 1 
+while 632, 40 12159900 12159900
+if_not 507, 299 0 0
+   send $skill
+    else
+        left 501, 464
+        end_if
+end_while
+send tab 1000
