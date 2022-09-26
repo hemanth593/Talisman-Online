@@ -1,0 +1,22 @@
+//resolution 1024x768
+//use this along with https://github.com/hemanth593/Talisman-Online/blob/main/DR_3rd-boss_fairy_heal_2.txt
+if  196, 43 2951479 2951479
+    send F1 1000
+else
+    if_not [  49, 353 65699 65699 ]
+        left 28, 367
+        wait 2s
+    end_if
+    if_not [ 49, 433 65699 65699 ]
+        left 28, 441
+        wait 2s
+    end_if
+    if_not [ 49, 273 65699 65699 ]
+        left  27, 282
+        wait 2s
+    end_if
+    if_not [ 93, 192 146 146 ]
+        left 29, 203
+     end_if
+
+end_if
