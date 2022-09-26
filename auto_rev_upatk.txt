@@ -1,0 +1,15 @@
+//all char 1024x768 auto  when rev  getup and attk
+set $skill F5 //for tamer set $skill 67890 
+set $positionHP 508, 162
+set $a $positionHP
+set $colorofHPPosition 0
+set $b $colorofHPPosition
+set $OKposition 454, 335
+set $c $OKposition
+repeat 1000
+       if $a $b $b
+          left $c
+       else
+           send $skill
+       end_if
+end_repeat
