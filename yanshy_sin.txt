@@ -1,5 +1,6 @@
 //resolution 1024x768
 //yanshy for sin tank mode only 
+// 50% stamina always be available to stun when required
 while 192, 55 41984 41984
     send F5 1000
 end_while
