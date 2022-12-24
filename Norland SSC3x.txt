@@ -1,4 +1,7 @@
 //monk NorLand
+// Based on youtube Video SSC 3x bot which needs to be in combination with other char
+//  combine script with Norland SSC 3x https://github.com/hemanth593/Talisman-Online/blob/main/Ludey%20SSC%203x.txt
+// for more info watch Youtbe video link : https://www.youtube.com/watch?v=_-tmqgFVFR8&t=18s 
 set #handle findwindow (Talisman Online)
 ShowWindow workwindow RESTORE
 set SendExDelay 10
