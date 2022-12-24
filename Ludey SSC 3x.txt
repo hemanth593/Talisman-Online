@@ -1,0 +1,241 @@
+set #handle findwindow (Talisman Online)
+ShowWindow workwindow RESTORE
+set SendExDelay 10
+set $simiweapon 0 //1002, 209
+set $daggerweapon 0 //957, 203
+set $telecharm 5
+set $aoeattack 361361361361631
+set $attack 11111111
+set $minimizeMap 996, 124
+set $viewReset 865, 58
+set $openfriendlist F
+set $foelist 626, 187
+set $invitename  630, 268
+set $teamup 659, 405
+set $mount 4
+set $transportFayColor 9679796
+set $transportFayPos 520, 289
+set $transportFayIcon 470188
+set $transportFayIconPos 630, 36
+set $surroundingsIcon 976, 58
+set $surroundingsInput 568, 540
+set $moondragonPandaLocation 412, 265
+set $moonDragonPanda 484, 396
+set $moonDragonVillage 322, 338
+set $surroundingsEsc 603, 162
+set $mysticBelieverLocation 306, 262
+set $mysticBeliever 474, 411
+set $hollowDemonGhostQuest 283, 356
+set $questReward 283, 431
+set $residualShadow 526525
+set $questAccept 309, 655
+set #residualShadow findcolor(0 0 1024 768 ($residualShadow)%arr workwindow)
+set $mdvTransportFayLocation 300, 263
+set $mdvTransportFay 506, 371
+set $clearWaterDamLocation 285, 523
+set $clearWaterDamMapHit1 697, 280
+set $spiderCatacombCave 557, 362
+set $spiderCatacombBoyLocation 340, 263
+set $spiderCatacombBoy 488, 405
+set $enterSSC 271, 364
+
+
+
+gosub stonecity
+gosub mysticquest
+gosub leaveteam
+gosub stonecity
+gosub givequest
+gosub mysticquest
+gosub leaveteam
+gosub stonecity
+gosub givequest
+gosub mysticquest
+gosub leaveteam
+gosub stonecity
+gosub givequest
+start_script 41
+stop_script
+
+
+
+
+
+:stonecity
+//send 0
+//change weapon to simitar
+send $simiweapon
+wait 1s
+//HideIdentity
+send_down F12
+sendex_down @
+send_up F12
+sendex_up @
+sendex
+//Viewreset
+left $viewReset
+repeat 5
+    left $minimizeMap
+    send_down {down} 1000
+end_repeat
+//Invite  Team
+:team
+set timer 0
+while timer < 5000
+if 504, 163 0 0
+    left 451, 337
+end_if
+end_while             //to accept team request it needss to be run from other script to avoid any conflicts
+//Go to MDV
+send $mount
+wait 2s
+left $surroundingsIcon
+left $surroundingsInput
+send Panda
+wait 3s
+left $moondragonPandaLocation
+left $surroundingsEsc
+wait 30s
+repeat 8
+    right $moonDragonPanda
+end_repeat
+left $moonDragonVillage
+wait 5s
+//Go to Mystic Believer
+left $surroundingsIcon
+left $surroundingsInput
+send Mystic
+wait 3s
+left $mysticBelieverLocation
+left $surroundingsEsc
+wait 15s
+send $mount
+return
+
+
+
+:mysticquest
+//while_not 272, 223 16246709
+    repeat 8
+        right $mysticBeliever
+    end_repeat
+//end_while
+wait 2s
+left $hollowDemonGhostQuest
+//set logging #residualShadow
+wait 2s
+//if #residualShadow > 0
+   left $questAccept
+//    wait 500
+//    left 360, 656
+//end_if
+send $mount
+wait 5s
+left $surroundingsIcon
+wait 500
+left $surroundingsInput
+wait 500
+send Transport
+left $mdvTransportFayLocation
+left $surroundingsEsc
+wait 15s
+//while_not 251, 249 9410559
+    repeat 8
+        right $mdvTransportFay
+    end_repeat
+//end_while
+wait 3s
+//Go to clearwaterdam
+left $clearWaterDamLocation
+send M
+wait 2s
+right $clearWaterDamMapHit1
+wait 5s
+right $spiderCatacombCave
+wait 5s
+send M
+wait 50s
+left $surroundingsIcon
+wait 500
+left $surroundingsInput
+wait 500
+send Spider
+wait 3s
+left $spiderCatacombBoyLocation
+left $surroundingsEsc
+    repeat 8
+        right $spiderCatacombBoy
+    end_repeat
+wait 2s
+left $enterSSC
+wait 5s
+//Move to BOSS in Cave
+repeat 3
+right 861, 113
+wait 6000
+end_repeat
+right 901, 116
+wait 2s
+right 919, 57
+wait 6s
+right 929, 103
+wait 2s
+right 932, 98
+wait 2s
+right 935, 124
+wait 3s
+right  946, 99
+wait 3s
+right 921, 96
+wait 2s
+right 955, 115
+wait 3s
+right 921, 125
+wait 1500
+right 945, 113
+wait 3s
+right 913, 107
+wait 2s
+send $mount  //mount down
+wait 2s
+send F1 1000
+send tab 1000
+set timer 0
+while timer < 45000
+    send $aoeattack
+end_while
+send F1 1000
+send ESC 1000
+//send $daggerweapon //change weapon to dagger
+right 938, 117
+wait 10s
+while_not 639, 44 5961593 5961593
+    send tab 1000
+end_while
+while_not 465, 49 1247766 1247766
+    send $attack
+end_while
+wait 5s
+send $telecharm
+return
+
+:givequest
+ repeat 8
+        right $mysticBeliever
+    end_repeat
+left 324, 335 // finished quest
+wait 1s
+left 297, 655  //acccomplish
+return
+
+:healpotion
+repeat 8
+    send 3 1000
+    wait 14s
+end_repeat
+return
+
+:leaveteam
+//leave the team
+wait 2s
+return
