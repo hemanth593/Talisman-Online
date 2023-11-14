@@ -66,7 +66,7 @@ double_right 322, 255
 double_right 322, 255
 double_right 300, 220
 wait 2s
-left 267, 409
+left 266, 396
 wait 2s
 repeat 3
 left 450, 326
