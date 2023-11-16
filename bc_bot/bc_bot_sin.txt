@@ -12,8 +12,6 @@ set $team_script_no 2  //This is to start another script that is set for accepti
 set #handle findwindow (Talisman Online)
 set SendExDelay 10
 
-
-
 //screen adjustments
 wait 1s
 repeat 3
