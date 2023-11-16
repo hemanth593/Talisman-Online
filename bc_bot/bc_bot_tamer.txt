@@ -11,6 +11,7 @@ set $avgwait 2100 // {(+12 mount = 2100) (+10 = 2200) with amulets lvl 10}  vari
 set $team_script_no 2 //This is to start another script that is set for accepting team when requested 
 set #handle findwindow (Talisman Online)
 set SendExDelay 10
+
 //screen adjustments
 wait 1s
 repeat 3
