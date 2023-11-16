@@ -1,0 +1,8 @@
+//the one who you are teaming from your mainchar needs to be on your foelist
+//Make sure only one person in foe list
+//resolution 1024x768
+set timer 0
+while timer < 15000
+left 446, 331
+end_while
+stop_script
