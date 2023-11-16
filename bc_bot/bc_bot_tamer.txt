@@ -8,7 +8,7 @@ set $telecharm 5
 set $petfood 1
 set $healingpotion 3
 set $avgwait 2100 // {(+12 mount = 2100) (+10 = 2200) with amulets lvl 10}  varies as per your character move speed increase the number as you desire
-set $team_script_no 2
+set $team_script_no 2 //This is to start another script that is set for accepting team when requested 
 set #handle findwindow (Talisman Online)
 set SendExDelay 10
 //screen adjustments
