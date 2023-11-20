@@ -1,0 +1,25 @@
+--lua
+log 'clear' log 'mode compact'
+local CLIENT = 0x00400000
+local POINTER_HP = readmem (CLIENT + 0x00C12980, "d")
+function get_current_HP()
+    return readmem(POINTER_HP + 0x320, "d")
+end
+function get_percent_HP()
+    return readmem(POINTER_HP + 0x3EC, "d")
+end
+function get_pethp_skillpoints()
+    return readmem(POINTER_HP + 0x3E8, "d")
+end
+function get_max_HP()
+    return readmem(POINTER_HP + 0x3E4, "d")
+end
+
+
+while true do
+    local hp = get_current_HP()
+    local absmaxhp = get_max_HP()
+    local petskillhp = get_pethp_skillpoints()
+    local maxhp1 = floor((((get_percent_HP() - 100) / 100) * (absmaxhp + petskillhp)) + (absmaxhp + petskillhp))
+        log(maxhp1,hp,petskillhp,get_percent_HP()-100)
+end
