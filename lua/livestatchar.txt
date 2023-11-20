@@ -6,7 +6,7 @@ function get_current_HP()
     return readmem(POINTER_HP + 0x320, "d")
 end
 function get_percent_HP()
-    return readmem(POINTER_HP + 0x3EC, "d")
+    return readmem(POINTER_HP + 0x3EC, "b")
 end
 function get_pethp_skillpoints()
     return readmem(POINTER_HP + 0x3E8, "d")
