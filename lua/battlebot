@@ -1,0 +1,52 @@
+
+--lua
+log 'clear' log 'mode compact'
+local CLIENT = 0x00400000
+local targetHpOffsets = {0x18, 0x16C, 0x0, 0xC}
+local TARGET_HP_POINTER = readmem(CLIENT + 0x00EBFB40, "d")
+local BATTLE_STATUS = readmem(CLIENT + 0x00C12980, "b")
+for i = 1, #targetHpOffsets
+do
+    TARGET_HP_POINTER =
+        readmem(TARGET_HP_POINTER + targetHpOffsets[i], "d")
+end
+
+local targetNameOffsets = {0x18, 0x215C, 0x0, 0x0, 0xC, 0x1F8}
+local TARGET_HP_NAME_POINTER = readmem(CLIENT + 0x00EBFB40, "d")
+for i = 1, #targetNameOffsets
+do
+    TARGET_HP_NAME_POINTER =
+        readmem(TARGET_HP_NAME_POINTER + targetNameOffsets[i], "d")
+end
+
+function pointers_getTargetHp()
+    while true do
+        local max = 597
+        local min = 460
+        local x =  readmem(TARGET_HP_POINTER + 0x3B38, "w")
+        local c = (100 * (x - min)/137)
+        return c
+    end
+end
+
+function utility_battleCheck()
+    local prevHp = ptr.getHp() wait(MS)
+    if ptr.getHp() < prevHp then return true
+    else return false end
+end
+
+function get_utility_hp(x)
+    if x < 0 then
+        return 0
+    else
+        return x
+    end
+end
+while true do
+
+    while pointers_getTargetHp() > 0 do
+        send ("1")
+        wait ("1s")
+    end
+    send ("TAB")
+end
