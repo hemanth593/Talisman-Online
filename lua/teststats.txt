@@ -1,0 +1,62 @@
+--lua
+log 'clear' log 'mode compact'
+local CLIENT = 0x00400000
+local POINTER_HP = readmem (CLIENT + 0x00C12980, "d")
+ local targetHpOffsets = {0x18, 0x16C, 0x0, 0xC}
+local TARGET_HP_POINTER = readmem(CLIENT + 0x00EBFB40, "d")
+
+function get_current_HP()
+    return readmem(POINTER_HP + 0x320, "d")
+end
+
+function get_max_HP()
+    local hp = get_current_HP()
+    local absmaxhp = readmem(POINTER_HP + 0x3E4, "d")
+    local petskillhp = readmem(POINTER_HP + 0x3E8, "d")
+    local maxhp1 = floor((((readmem(POINTER_HP + 0x3EC, "b") - 100) / 100) * (absmaxhp + petskillhp)) + (absmaxhp + petskillhp))
+    return maxhp1
+end
+function Battle_Status()
+    return readmem(readmem(CLIENT + 0x00C12980, "d") + 0x7BC, "b")
+end
+
+function Char_Level()
+    return readmem(CLIENT + 0x00C12980, "d")
+end
+
+function pointers_isTargetSelected()
+
+end
+function getLocation()
+    local locationOffsets = {0x18, 0x2304, 0xC, 0x1F4, 0x54, 0x54}
+    local LOCATION_POINTER = readmem(CLIENT + 0x00EBFB40, "d")
+    for i = 1, #locationOffsets
+    do
+    LOCATION_POINTER =
+        readmem(LOCATION_POINTER + locationOffsets[i], "d")
+    end
+    local location = readmem(LOCATION_POINTER + 0x0, "s", 51)
+    local position = regexp(location, [[\[]])
+    return string.sub(location, 0, position - 2)
+end
+
+function getLevel()
+    return readmem(readmem(CLIENT + 0x00C12980, "d") + 0x32C, "w")
+end
+function mountspeed()
+    return readmem(readmem(CLIENT + 0x00C12980, "d") + 0x81C, "d")
+end
+
+function Target_Name()
+    local targetNameOffsets = {0x18, 0x215C, 0x0, 0x0, 0xC, 0x1F8}
+    local TARGET_HP_NAME_POINTER = readmem(CLIENT + 0x00EBFB40, "d")
+    for i = 1, #targetNameOffsets
+    do
+        TARGET_HP_NAME_POINTER =
+            readmem(TARGET_HP_NAME_POINTER + targetNameOffsets[i], "w")
+    end
+   return TARGET_HP_NAME_POINTER
+end
+while true do
+       log (get_max_HP(),get_current_HP(),Battle_Status(),getLocation(),getLevel(),mountspeed())
+end
