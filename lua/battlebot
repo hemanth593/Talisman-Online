@@ -15,11 +15,14 @@ function targetHPpercent()
             return c
         end
 end
-while true do
+function battle()
     while targetHPpercent() > 0 do
-        send ("1")
+        send ("F5")
         wait ("1s")
     end
     send ("TAB")
-    wait ("3s")
+    wait ("2s")
+end
+while true do
+       battle()
 end
