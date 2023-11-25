@@ -18,10 +18,10 @@ end
 function battle()
     while targetHPpercent() > 0 do
         send ("F5")
-        wait ("1s")
+        wait(30)
     end
     send ("TAB")
-    wait ("2s")
+    wait(30)
 end
 while true do
        battle()
