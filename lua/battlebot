@@ -49,4 +49,5 @@ while true do
         wait ("1s")
     end
     send ("TAB")
+    wait ("3s")
 end
