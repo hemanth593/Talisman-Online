@@ -119,7 +119,7 @@ function Battle_decider()
     if Mana_Percent() < 30 or  HP_Percent() < 50 then
             if Battle_Status() == 0 then
                 if Char_Sit() == 0 then
-                    send ("5")
+                    send ("56")
                     wait ("15s")
                 end
             end
