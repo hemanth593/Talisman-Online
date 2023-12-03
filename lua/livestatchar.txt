@@ -1,7 +1,19 @@
-
+//slot 1 for attack
+//slot {5,6} {hp,mana} pots
+//slot 0 for PetFood which is pending as of now
 --lua
 log 'clear' log 'mode compact'
 local CLIENT = 0x00400000
+function charName()
+    local CLIENT = 0x00400000
+    local CHAR_NAME= readmem(CLIENT + 0x00C12980, "d")
+    local name = readmem(CHAR_NAME + 0x3C4, "s", 30)
+
+    if string.match(name, "^[%w]+$") then return name
+    else
+        return readmem(readmem(CHAR_NAME + 0x3C4, "d") + 0x0, "s", 30)
+    end
+end
 
 function CHAR_HP()
     return readmem (CLIENT + 0x00C12980, "d")
@@ -94,13 +106,104 @@ function mount_status()
         return 0
     end
 end
-function battle()
-    while targetHPpercent() > 0 do
-        send ("F5")
-        wait(30)
+function Tab()
+    if HP_Percent() < 50 then
+            if Battle_Status() == 0 then
+                if Char_Sit() == 0 then
+                    while HP_Percent() < 95 do
+                        send ("56")
+                    end
+                    wait ("1s")
+                    log("Finding mob")
+                    send ("Tab")
+                    Battle_decider()
+                end
+            end
+    else
+        wait ("1s")
+        log("Finding mob")
+        send ("Tab")
+        Battle_decider()
     end
-    send ("TAB")
+end
+
+function Battle()
+    log("attacking")
+    local timer = os.time()
+    local timer2 = timer + 15
+        while targetHPpercent() > 0 and os.time() < timer2 do
+          --  log("Timer_COUNT1 : ",timer)
+         --   log(targetHPpercent(),os.time(),Target_Selected())
+            wait ("1s")
+            if targetHPpercent() == 100 and os.time() > timer2 and Target_Selected() == 1 then
+                local timer = os.time()
+                local timer2 = timer + 15
+                log("Target Stucked as more than 5 seconds with full HP")
+                Tab()
+            end
+          --  log("Timer_COUNT2 : ",timer)
+            send ("222")
+            wait(30)
+        end
+        if targetHPpercent() == 0 then
+            log("KILLED")
+            log(killed(1))
+      --  log("Timer_COUNT3 : ",timer)
+            Tab()
+        end
+end
+--Battle Decider
+function Battle_decider()
+    while Target_Selected() == 0 do
+        log("Target_Selected :",Target_Name())
+        Tab()
+    end
+    if Target_Selected() == 1 then
+        log("Target_Selected :",Target_Name())
+        wait("1s")
+    end
+    while Battle_Status() == 1 do
+        log("Somebody else attacking us")
+        Battle()
+    end
+    while HP_Percent() > 50  do
+        log("Char :",charName()," | Current_HP %:",HP_Percent())
+        Battle()
+    end
+end
+--Mana
+function Mana()
+    return readmem(CLIENT + 0x00C12980, "d")
+end
+-- Current Mana
+function Current_Mana()
+    return readmem(Mana() + 0x324, "d")
+end
+-- Mana buff
+function Mana_Buff()
+    return readmem(Mana() + 0x2B8, "d")
+end
+-- Max mana
+function Max_Mana()
+    return readmem(Mana()  + 0x2B4, "d") + Mana_Buff()
+end
+
+--ManaPercent
+function Mana_Percent()
+   return  ((Current_Mana()/ Max_Mana())*100)
+end
+--HPPercent
+function HP_Percent()
+   return  ((get_current_HP()/ TOTAL_CHAR_MAX_HP())*100)
+end
+
+local kill = 0
+
+function killed(x)
+
+               kill = kill + x
+               log("kill_count :",kill)
 end
 while true do
-      log (targetHP())
+      log ("Current HP :",get_current_HP(),"Max HP :",TOTAL_CHAR_MAX_HP(),"Current HP in %:",HP_Percent(),"Current Mana :",Current_Mana(),"Max Mana :",Max_Mana(),"Current Mana in %:",Mana_Percent(),"Target HP % ",targetHPpercent())
 end
