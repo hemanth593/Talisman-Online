@@ -3,12 +3,12 @@
 repeat 8
 set #handle findwindow (8604)
 set $mount 4  //mount is on number 4
-set $attack 0  //attack
+set $attack 1  //attack
 set $telecharm 5
-set $petfood 1
+set $petfood 0
 set $healingpotion 3
 set $avgwait 2100  // {(+12 mount = 2100) (+10 = 2200) with amulets lvl 10}  varies as per your character move speed increase the number as you desire
-set $team_script_no 2  //This is to start another script that is set for accepting team when requested 
+set $team_script_no 1  //This is to start another script that is set for accepting team when requested
 set #handle findwindow (Talisman Online)
 set SendExDelay 10
 
@@ -117,13 +117,8 @@ wait 500
 left 594, 415
 left 359, 273
 
-wait 10s
+wait 30s
 
-repeat 4
-left 359, 273
-wait 5s
-
-end_repeat 4
 left 407, 537
 wait 1s
 double_right 467, 417
@@ -149,7 +144,7 @@ wait 500
 //wait 15s
 //send $mount
 //wait 2s
-
+//ShowWindow workwindow MINIMIZE
 right 874, 105
 wait $avgwait
 right  883, 78
@@ -360,13 +355,13 @@ right 887, 114
 wait 3s
 send $mount
  //attack
-repeat 25
+repeat 30
 send tab 500
 set timer 0
 while timer < 5000
 send $attack
 end_while
-end_repeat 25
+end_repeat 30
 ShowWindow workwindow RESTORE
 
 
@@ -387,7 +382,6 @@ for #i 1 #size 2
         send I
         wait 1s
 send $telecharm
-//ShowWindow workwindow MINIMIZE
 wait 5s
 end_for
 end_repeat 8
