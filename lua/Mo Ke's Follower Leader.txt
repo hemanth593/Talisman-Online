@@ -1,10 +1,9 @@
-// slot 1 is for attack
-//slot 5,6 for HP , MANA pots
-//slot 0 for Petfood
+//slot 1 for attack
+//slot {5,6} {hp,mana} pots
+//slot 0 for PetFood which is pending as of now
 --lua
 log 'clear' log 'mode compact'
 local CLIENT = 0x00400000
-
 function charName()
     local CLIENT = 0x00400000
     local CHAR_NAME= readmem(CLIENT + 0x00C12980, "d")
@@ -15,6 +14,7 @@ function charName()
         return readmem(readmem(CHAR_NAME + 0x3C4, "d") + 0x0, "s", 30)
     end
 end
+
 function CHAR_HP()
     return readmem (CLIENT + 0x00C12980, "d")
 end
@@ -106,34 +106,33 @@ function mount_status()
         return 0
     end
 end
-
---Tab
 function Tab()
-    if HP_Percent() < 50 or Mana_Percent < 30 then
+    if HP_Percent() < 50 then
             if Battle_Status() == 0 then
                 if Char_Sit() == 0 then
-                    while HP_Percent() < 95 or Mana_Percent < 95 do
+                    while HP_Percent() < 95 do
                         send ("56")
                     end
                     wait ("1s")
-                    log("Finding mob..")
+                    log("Finding mob")
                     send ("Tab")
                     Battle_decider()
                 end
             end
     else
         wait ("1s")
-        log("Finding mob..")
+        log("Finding mob")
         send ("Tab")
         Battle_decider()
     end
 end
---Battle
+
 function Battle()
     log("attacking")
     local timer = os.time()
     local timer2 = timer + 15
         while targetHPpercent() > 0 and os.time() < timer2 do
+          --  log("Timer_COUNT1 : ",timer)
          --   log(targetHPpercent(),os.time(),Target_Selected())
             wait ("1s")
             if targetHPpercent() == 100 and os.time() > timer2 and Target_Selected() == 1 then
@@ -142,12 +141,14 @@ function Battle()
                 log("Target Stucked as more than 5 seconds with full HP")
                 Tab()
             end
+          --  log("Timer_COUNT2 : ",timer)
             send ("222")
             wait(30)
         end
         if targetHPpercent() == 0 then
             log("KILLED")
             log(killed(1))
+      --  log("Timer_COUNT3 : ",timer)
             Tab()
         end
 end
@@ -166,7 +167,7 @@ function Battle_decider()
         Battle()
     end
     while HP_Percent() > 50  do
-        log("Current_HP of charName()",HP_Percent())
+        log("Char :",charName()," | Current_HP %:",HP_Percent())
         Battle()
     end
 end
@@ -203,25 +204,30 @@ function killed(x)
                kill = kill + x
                log("kill_count :",kill)
 end
-function Moke_Boss()
-    Boss_Name = "Mo Ke's Follower Leader"
-     if  Target_Name() == Boss_Name and targetHPpercent() > 0 then
-        while Target_Name() == Boss_Name and targetHPpercent() > 0 do
-            send ("123123")
-         end
 
-     else
-         while Target_Name() == Boss_Name and targetHPpercent() == 0 do
-                     log(killed(1))
-                     wait ("2s")
-                     send ("Tab")
-                      wait ("2s")
-         end
-         while (not(Target_Name() == Boss_Name)) do
-            send ("Tab")
-         end
-     end
+function moke()
+    local Boss_Name = "Mo Ke's Follower Leader"
+    --log(Boss_Name)
+    while Target_Name() == Boss_Name and targetHPpercent() > 0 do
+        send ("1")
+        wait(100)
+    end
+    wait(100)
+    send ("Tab")
+    wait(100)
 end
+function chapin_boss()
+    local Boss_Name = "Cha Pin's Brother Cha Hui"
+    --log(Boss_Name)
+    while Target_Name() == Boss_Name and targetHPpercent() > 0 do
+        send ("1")
+        wait(100)
+    end
+    wait(100)
+    send ("Tab")
+    wait(100)
+end
+
 while true do
-        Moke_Boss()
+     moke()
 end
