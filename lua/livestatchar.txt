@@ -204,6 +204,24 @@ function killed(x)
                kill = kill + x
                log("kill_count :",kill)
 end
+function getLocation_cords(p)
+    local locationPointers = {0x18, 0x2304, 0xC, 0x1F4, 0x54, 0x54}
+    local Location = readmem(CLIENT + 0x00EBFB40, "d")
+    for i = 1, #locationPointers
+    do
+    Location = readmem(Location + locationPointers[i], "d")
+    end
+    local location = readmem(Location + 0x0, "s", 51)
+    local pattern = "%[(-?%d+),(-?%d+)]"
+    local a, b = string.match(location, pattern)
+    m = p
+    if m == 0
+        then return a
+    end
+    if m == 1 then
+        return b
+    end
+end
 while true do
       log ("Current HP :",get_current_HP(),"Max HP :",TOTAL_CHAR_MAX_HP(),"Current HP in %:",HP_Percent(),"Current Mana :",Current_Mana(),"Max Mana :",Max_Mana(),"Current Mana in %:",Mana_Percent(),"Target HP % ",targetHPpercent())
 end
