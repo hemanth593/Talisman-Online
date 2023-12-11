@@ -1,0 +1,244 @@
+//slot 1 for attack
+//slot {5,6} {hp,mana} pots
+//slot 0 for PetFood which is pending as of now
+--lua
+log 'clear' log 'mode compact'
+local CLIENT = 0x00400000
+function charName()
+    local CLIENT = 0x00400000
+    local CHAR_NAME= readmem(CLIENT + 0x00C12980, "d")
+    local name = readmem(CHAR_NAME + 0x3C4, "s", 30)
+
+    if string.match(name, "^[%w]+$") then return name
+    else
+        return readmem(readmem(CHAR_NAME + 0x3C4, "d") + 0x0, "s", 30)
+    end
+end
+
+function CHAR_HP()
+    return readmem (CLIENT + 0x00C12980, "d")
+end
+function get_current_HP()
+    return readmem(CHAR_HP() + 0x320, "d")
+end
+function get_percent_HP()
+    return readmem(CHAR_HP() + 0x3EC, "b")
+end
+function get_pethp_skillpoints()
+    return readmem(CHAR_HP() + 0x3E8, "d")
+end
+function get_basic_max_HP()
+    return readmem(CHAR_HP() + 0x3E4, "d")
+end
+
+function TOTAL_CHAR_MAX_HP()
+    local maxhp = floor((((get_percent_HP() - 100) / 100) * (get_basic_max_HP() + get_pethp_skillpoints())) + (get_basic_max_HP() + get_pethp_skillpoints()))
+     return maxhp
+end
+
+function targetHP()
+   return readmem(readmem(readmem(readmem(readmem(readmem(CLIENT + 0x00EBFB40, "d") +  0x18 , "d") + 0x16C , "d") + 0x0 , "d") + 0xC , "d") + 0x3B38 , "d")
+end
+
+function targetHPpercent()
+        local max = 597
+        local min = 460
+        local x =  targetHP()
+        local c = (100 * (x - min)/137)
+        if c < 0 then
+            return 0
+        else
+            return c
+        end
+end
+function getLocation()
+    local locationPointers = {0x18, 0x2304, 0xC, 0x1F4, 0x54, 0x54}
+    local Location = readmem(CLIENT + 0x00EBFB40, "d")
+    for i = 1, #locationPointers
+    do
+    Location = readmem(Location + locationPointers[i], "d")
+    end
+    local location = readmem(Location + 0x0, "s", 51)
+    local position = regexp(location, [[\[]])
+    return string.sub(location, 0, position - 2)
+end
+function getCharLevel()
+    return readmem(readmem(CLIENT + 0x00C12980, "d") + 0x32C, "w")
+end
+function Battle_Status()
+    return readmem(readmem(CLIENT + 0x00C12980, "d") + 0x7BC, "b")
+end
+function Target_Selected()
+    local targetSelectedPointers = {0xD0, 0x53C, 0x24, 0xF4}
+    local Target_Selected = readmem(CLIENT + 0x00EB1E28, "d")
+    for i = 1, #targetSelectedPointers
+    do
+        Target_Selected = readmem(Target_Selected + targetSelectedPointers[i], "d")
+    end
+
+    return  readmem(Target_Selected + 0x24A0, "d")
+end
+
+function Target_Name()
+    local targetNamePointers = {0x18, 0x215C, 0x0, 0x0, 0xC, 0x1F8}
+    local TARGET_HP_NAME = readmem(CLIENT + 0x00EBFB40, "d")
+    for i = 1, #targetNamePointers
+    do
+        TARGET_HP_NAME = readmem(TARGET_HP_NAME + targetNamePointers[i], "d")
+    end
+        local name = readmem(TARGET_HP_NAME + 0x1254, "s", 51)
+
+    -- If name is alphanumeric return it safely
+    if string.match(name, "^[%w ']+$") then return name
+    else
+        return readmem(readmem(TARGET_HP_NAME + 0x1254, "d") + 0x0, "s", 51)
+    end
+
+end
+function Char_Sit()
+    return readmem(CLIENT + 0xC4D8B8, "d")
+end
+function mount_status()
+    mount = readmem(readmem(CLIENT + 0x00C12980, "d") + 0x81C, "d")
+    if mount > 0 then
+        return 1
+    else
+        return 0
+    end
+end
+function Tab()
+    if HP_Percent() < 50 then
+            if Battle_Status() == 0 then
+                if Char_Sit() == 0 then
+                    while HP_Percent() < 95 do
+                        send ("56")
+                    end
+                    wait ("1s")
+                    log("Finding mob")
+                    send ("Tab")
+                    Battle_decider()
+                end
+            end
+    else
+        wait ("1s")
+        log("Finding mob")
+        send ("Tab")
+        Battle_decider()
+    end
+end
+
+function Battle()
+    log("attacking")
+    local timer = os.time()
+    local timer2 = timer + 15
+        while targetHPpercent() > 0 and os.time() < timer2 do
+          --  log("Timer_COUNT1 : ",timer)
+         --   log(targetHPpercent(),os.time(),Target_Selected())
+            wait ("1s")
+            if targetHPpercent() == 100 and os.time() > timer2 and Target_Selected() == 1 then
+                local timer = os.time()
+                local timer2 = timer + 15
+                log("Target Stucked as more than 5 seconds with full HP")
+                Tab()
+            end
+          --  log("Timer_COUNT2 : ",timer)
+            send ("222")
+            wait(30)
+        end
+        if targetHPpercent() == 0 then
+            log("KILLED")
+            log(killed(1))
+      --  log("Timer_COUNT3 : ",timer)
+            Tab()
+        end
+end
+--Battle Decider
+function Battle_decider()
+    while Target_Selected() == 0 do
+        log("Target_Selected :",Target_Name())
+        Tab()
+    end
+    if Target_Selected() == 1 then
+        log("Target_Selected :",Target_Name())
+        wait("1s")
+    end
+    while Battle_Status() == 1 do
+        log("Somebody else attacking us")
+        Battle()
+    end
+    while HP_Percent() > 50  do
+        log("Char :",charName()," | Current_HP %:",HP_Percent())
+        Battle()
+    end
+end
+--Mana
+function Mana()
+    return readmem(CLIENT + 0x00C12980, "d")
+end
+-- Current Mana
+function Current_Mana()
+    return readmem(Mana() + 0x324, "d")
+end
+-- Mana buff
+function Mana_Buff()
+    return readmem(Mana() + 0x2B8, "d")
+end
+-- Max mana
+function Max_Mana()
+    return readmem(Mana()  + 0x2B4, "d") + Mana_Buff()
+end
+
+--ManaPercent
+function Mana_Percent()
+   return  ((Current_Mana()/ Max_Mana())*100)
+end
+--HPPercent
+function HP_Percent()
+   return  ((get_current_HP()/ TOTAL_CHAR_MAX_HP())*100)
+end
+
+local kill = 0
+
+function killed(x)
+
+               kill = kill + x
+               log("kill_count :",kill)
+end
+
+function moke(p)
+    local Boss_Name = "Mo Ke's Follower Leader"
+    --log(Boss_Name)
+    while Target_Name() == Boss_Name and targetHPpercent() > 0 do
+        send (p)
+        wait(100)
+    end
+    wait(100)
+    send ("Tab")
+    wait(100)
+end
+function chapin_boss(p)
+    local Boss_Name = "Cha Pin's Brother Cha Hui"
+    --log(Boss_Name)
+    while Target_Name() == Boss_Name and targetHPpercent() > 0 do
+        send (p)
+        wait(100)
+    end
+    wait(100)
+    send ("Tab")
+    wait(100)
+end
+function Diamond_King(p)
+    local Boss_Name = "Diamond King - Ya Li"
+    log(Boss_Name)
+    while Target_Name() == Boss_Name and targetHPpercent() > 0 do
+        send (p)
+        wait(100)
+    end
+    wait(100)
+    send ("Tab")
+    wait(100)
+end
+
+while true do
+     Diamond_King(111)
+end
