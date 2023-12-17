@@ -233,7 +233,7 @@ end
 
 function deadbox()
     local dead_box = readmem(CLIENT + 0xC2B80C, "d")
-    if dead_box == 257 then
+    if dead_box > 1 then
         return 0
     end
     if dead_box == 1 then
@@ -269,5 +269,5 @@ end
 
 
 while true do
-    pcp_suwan(123)
+    pcp_suwan(123) -- for function keys use pcp_suwan("F5")
 end
