@@ -259,19 +259,27 @@ end
 
 function auto_attack_on_rev(attackkeys)
     if dead() == 1 and getConfirmBox() == 1 then
+        wait(30)
         left(442, 334)
+        wait(30)
     else
         if  targetHPpercent() > 0 and Target_Selected() == 1 and dead() == 0 then
+        wait(30)
             send (attackkeys)
+        wait(30)
         end
     end
 end
 function pcp_suwan(attackkeys)
     if dead() == 1  then
+        wait(30)
         left(508, 467)
+        wait(30)
     else
         if  targetHPpercent() > 0 and Target_Selected() == 1 and dead() == 0 then
+        wait(30)
             send (attackkeys)
+        wait(30)
         end
     end
 end
