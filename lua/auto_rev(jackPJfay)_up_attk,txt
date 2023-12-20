@@ -3,7 +3,7 @@ log 'clear' log 'mode compact'
 local CLIENT = 0x00400000
 function charName()
     local CLIENT = 0x00400000
-    local CHAR_NAME= readmem(CLIENT + 0x00C12980, "d")
+    local CHAR_NAME= readmem(CLIENT + 0x00C15980, "d")
     local name = readmem(CHAR_NAME + 0x3C4, "s", 30)
 
     if string.match(name, "^[%w]+$") then return name
@@ -13,7 +13,7 @@ function charName()
 end
 
 function CHAR_HP()
-    return readmem (CLIENT + 0x00C12980, "d")
+    return readmem (CLIENT + 0x00C15980, "d")
 end
 function get_current_HP()
     return readmem(CHAR_HP() + 0x320, "d")
@@ -34,7 +34,15 @@ function TOTAL_CHAR_MAX_HP()
 end
 
 function targetHP()
-   return readmem(readmem(readmem(readmem(readmem(readmem(CLIENT + 0x00EBFB40, "d") +  0x18 , "d") + 0x16C , "d") + 0x0 , "d") + 0xC , "d") + 0x3B38 , "d")
+   --return readmem(readmem(readmem(readmem(readmem(readmem(CLIENT + 0x00EC2D28, "d") +  0x18 , "d") + 0x16C , "d") + 0x0 , "d") + 0xC , "d") + 0x3B38 , "d")
+    local targetHPPointers = {0x18, 0x16C, 0x0, 0xC, 0x1F8, 0x448, 0xC00}
+    local Target_HP = readmem(CLIENT + 0x00EC2D28, "d")
+    for i = 1, #targetHPPointers
+    do
+        Target_Selected = readmem(Target_HP + targetHPPointers[i], "d")
+    end
+
+    return  readmem(Target_HP + 0xC00, "d")
 end
 
 function targetHPpercent()
@@ -50,7 +58,7 @@ function targetHPpercent()
 end
 function getLocation()
     local locationPointers = {0x18, 0x2304, 0xC, 0x1F4, 0x54, 0x54}
-    local Location = readmem(CLIENT + 0x00EBFB40, "d")
+    local Location = readmem(CLIENT + 0x00EC2D28, "d")
     for i = 1, #locationPointers
     do
     Location = readmem(Location + locationPointers[i], "d")
@@ -60,14 +68,14 @@ function getLocation()
     return string.sub(location, 0, position - 2)
 end
 function getCharLevel()
-    return readmem(readmem(CLIENT + 0x00C12980, "d") + 0x32C, "w")
+    return readmem(readmem(CLIENT + 0x00C15980, "d") + 0x32C, "w")
 end
 function Battle_Status()
-    return readmem(readmem(CLIENT + 0x00C12980, "d") + 0x7BC, "b")
+    return readmem(readmem(CLIENT + 0x00C15980, "d") + 0x7BC, "b")
 end
 function Target_Selected()
-    local targetSelectedPointers = {0xD0, 0x53C, 0x24, 0xF4}
-    local Target_Selected = readmem(CLIENT + 0x00EB1E28, "d")
+    local targetSelectedPointers = {0xD0, 0x794, 0x0, 0x24, 0xAC, 0x20, 0x1AC}
+    local Target_Selected = readmem(CLIENT + 0x00EB5010, "d")
     for i = 1, #targetSelectedPointers
     do
         Target_Selected = readmem(Target_Selected + targetSelectedPointers[i], "d")
@@ -77,26 +85,27 @@ function Target_Selected()
 end
 
 function Target_Name()
-    local targetNamePointers = {0x18, 0x215C, 0x0, 0x0, 0xC, 0x1F8}
-    local TARGET_HP_NAME = readmem(CLIENT + 0x00EBFB40, "d")
+    local targetNamePointers = {0x18, 0xB1C, 0x0, 0xC, 0xD9C}
+    local Target_Name = readmem(CLIENT + 0x012C2D28, "d")
     for i = 1, #targetNamePointers
     do
-        TARGET_HP_NAME = readmem(TARGET_HP_NAME + targetNamePointers[i], "d")
+        Target_Name = readmem(Target_Name + targetNamePointers[i], "d")
     end
-        local name = readmem(TARGET_HP_NAME + 0x1254, "s", 51)
+
+    local name = readmem(Target_Name + 0x9AC, "s", 51)
 
     -- If name is alphanumeric return it safely
     if string.match(name, "^[%w ']+$") then return name
     else
-        return readmem(readmem(TARGET_HP_NAME + 0x1254, "d") + 0x0, "s", 51)
+        return readmem(readmem(Target_Name + 0x9AC, "d") + 0x0, "s", 51)
     end
 
 end
 function Char_Sit()
-    return readmem(CLIENT + 0xC4D8B8, "d")
+    return readmem(CLIENT + 0xC50938, "d")
 end
 function mount_status()
-    mount = readmem(readmem(CLIENT + 0x00C12980, "d") + 0x81C, "d")
+    mount = readmem(readmem(CLIENT + 0x00C15980, "d") + 0x81C, "d")
     if mount > 0 then
         return 1
     else
@@ -170,7 +179,7 @@ function Battle_decider()
 end
 --Mana
 function Mana()
-    return readmem(CLIENT + 0x00C12980, "d")
+    return readmem(CLIENT + 0x00C15980, "d")
 end
 -- Current Mana
 function Current_Mana()
@@ -228,11 +237,11 @@ end
 --	end
 --end
 function getConfirmBox()
-    return readmem(CLIENT + 0xEBFBBC, "d")
+    return readmem(CLIENT + 0xEC2DA4, "d")
 end
 
 function deadbox()
-    local dead_box = readmem(CLIENT + 0xC2B80C, "d")
+    local dead_box = readmem(CLIENT + 0xC2E894, "d")
     if dead_box > 1 then
         return 0
     end
@@ -249,33 +258,26 @@ function dead()
 end
 
 function auto_attack_on_rev(attackkeys)
-    if dead() == 1 and getConfirmBox() > 0 then
-        wait(30)
+    if dead() == 1 and getConfirmBox() == 1 then
         left(442, 334)
-        wait(30)
     else
         if  targetHPpercent() > 0 and Target_Selected() == 1 and dead() == 0 then
-            wait(30)
             send (attackkeys)
-            wait(30)
         end
     end
 end
 function pcp_suwan(attackkeys)
     if dead() == 1  then
-        wait(30)
         left(508, 467)
-        wait(30)
     else
         if  targetHPpercent() > 0 and Target_Selected() == 1 and dead() == 0 then
-            wait(30)
             send (attackkeys)
-            wait(30)
         end
     end
 end
 
 
 while true do
-    auto_attack_on_rev("123")
+    --pcp_suwan(123) -- for function keys use pcp_suwan("F5")
+    auto_attack_on_rev("F5")
 end
