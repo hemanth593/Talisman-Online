@@ -50,7 +50,7 @@ function deadbox()
     if dead_box > 1 then
         return 0
     end
-    if dead_box == 1 then
+    if dead_box <= 1 then
         return 1
     end
 end
@@ -63,7 +63,7 @@ function dead()
 end
 
 function auto_attack_on_rev(attackkeys)
-    if dead() == 1 and getConfirmBox() == 1 then
+    if dead() == 1 and getConfirmBox() ~= 0 then
         wait(30)
         left(442, 334)
         wait(30)
@@ -91,6 +91,6 @@ end
 
 
 while true do
-    pcp_suwan(123)
-    --auto_attack_on_rev(111)
+     pcp_suwan("F5")
+    --auto_attack_on_rev("F5")
 end
