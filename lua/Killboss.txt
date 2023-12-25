@@ -7,7 +7,7 @@ Boss_Name = "Asura Military Headman"
 
 log 'clear' log 'mode compact'
 local CLIENT = 0x00400000
-function bot.charName()
+function charName()
     local CLIENT = 0x00400000
     local CHAR_NAME= readmem(0x00400000 +0x00C15980, "d")
     local name = readmem(CHAR_NAME + 0x3C4, "s", 30)
@@ -17,39 +17,39 @@ function bot.charName()
         return readmem(readmem(CHAR_NAME + 0x3C4, "d") + 0x0, "s", 30)
     end
 end
-function bot.Inventory()
+function Inventory()
     return readmem(BAG_OPEN_POINTER + 0x240, "d") == 903 and true or false
 end
 
-function bot.CHAR_HP()
+function CHAR_HP()
     return readmem (0x00400000 +0x00C15980, "d")
 end
-function bot.get_current_HP()
-    return readmem(bot.CHAR_HP() + 0x320, "d")
+function get_current_HP()
+    return readmem(CHAR_HP() + 0x320, "d")
 end
-function bot.get_percent_HP()
-    return readmem(bot.CHAR_HP() + 0x3EC, "b")
+function get_percent_HP()
+    return readmem(CHAR_HP() + 0x3EC, "b")
 end
-function bot.get_pethp_skillpoints()
-    return readmem(bot.CHAR_HP() + 0x3E8, "d")
+function get_pethp_skillpoints()
+    return readmem(CHAR_HP() + 0x3E8, "d")
 end
-function bot.get_basic_max_HP()
-    return readmem(bot.CHAR_HP() + 0x3E4, "d")
+function get_basic_max_HP()
+    return readmem(CHAR_HP() + 0x3E4, "d")
 end
 
-function bot.TOTAL_CHAR_MAX_HP()
-    local maxhp = floor((((bot.get_percent_HP() - 100) / 100) * (bot.get_basic_max_HP() + bot.get_pethp_skillpoints())) + (bot.get_basic_max_HP() + bot.get_pethp_skillpoints()))
+function TOTAL_CHAR_MAX_HP()
+    local maxhp = floor((((get_percent_HP() - 100) / 100) * (get_basic_max_HP() + get_pethp_skillpoints())) + (get_basic_max_HP() + get_pethp_skillpoints()))
      return maxhp
 end
 
-function bot.targetHP()
+function targetHP()
    return readmem(readmem(readmem(readmem(readmem(readmem(0x00400000 +0x00EBFB40, "d") +  0x18 , "d") + 0x16C , "d") + 0x0 , "d") + 0xC , "d") + 0x3B38 , "d")
 end
 
-function bot.targetHPpercent()
+function targetHPpercent()
         local max = 597
         local min = 460
-        local x =  bot.targetHP()
+        local x =  targetHP()
         local c = (100 * (x - min)/137)
         if c < 0 then
             return 0
@@ -57,7 +57,7 @@ function bot.targetHPpercent()
             return c
         end
 end
-function bot.getLocation()
+function getLocation()
     local locationPointers = {0x18, 0x2304, 0xC, 0x1F4, 0x54, 0x54}
     local Location = readmem(CLIENT + 0x00EC2D28, "d")
     for i = 1, #locationPointers
@@ -68,7 +68,7 @@ function bot.getLocation()
     local position = regexp(location, [[\[]])
     return string.sub(location, 0, position - 2)
 end
-function bot.getLocation_cords(p)
+function getLocation_cords(p)
     local locationPointers = {0x18, 0x2304, 0xC, 0x1F4, 0x54, 0x54}
     local Location = readmem(CLIENT + 0x00EC2D28, "d")
     for i = 1, #locationPointers
@@ -88,13 +88,13 @@ function bot.getLocation_cords(p)
 end
 
 
-function bot.getCharLevel()
+function getCharLevel()
     return readmem(readmem(0x00400000 +0x00C15980, "d") + 0x32C, "w")
 end
-function bot.Battle_Status()
+function Battle_Status()
     return readmem(readmem(0x00400000 +0x00C15980, "d") + 0x7BC, "b")
 end
-function bot.Target_Selected()
+function Target_Selected()
     local targetSelectedPointers = {0xD0, 0x794, 0x0, 0x24, 0xAC, 0x20}
     local Target_Selected = readmem(CLIENT + 0x00EB5010, "d")
     for i = 1, #targetSelectedPointers
@@ -105,7 +105,7 @@ function bot.Target_Selected()
     return  readmem(Target_Selected + 0x1AC, "d")
 end
 
-function bot.Target_Name()
+function Target_Name()
     local targetNamePointers = {0x18, 0xB1C, 0x0, 0xC, 0xD9C}
     local Target_Name = readmem(CLIENT + 0x012C2D28, "d")
     for i = 1, #targetNamePointers
@@ -121,10 +121,10 @@ function bot.Target_Name()
         return readmem(readmem(Target_Name + 0x9AC, "d") + 0x0, "s", 51)
     end
 end
-function bot.Char_Sit()
+function Char_Sit()
     return readmem(CLIENT + 0xC4D8B8, "d")
 end
-function bot.mount_status()
+function mount_status()
     mount = readmem((readmem(0x01139C0C, "d")) + 0x8B0, "d")
     if mount > 0 then
         return 1
@@ -134,35 +134,35 @@ function bot.mount_status()
 end
 
 --Tab
-function bot.Tab()
-    if bot.HP_Percent() < 50 or bot.Mana_Percent < 30 then
-            if bot.Battle_Status() == 0 then
-                if bot.Char_Sit() == 0 then
-                    while bot.HP_Percent() < 95 or bot.Mana_Percent < 95 do
+function Tab()
+    if HP_Percent() < 50 or Mana_Percent < 30 then
+            if Battle_Status() == 0 then
+                if Char_Sit() == 0 then
+                    while HP_Percent() < 95 or Mana_Percent < 95 do
                         send ("56")
                     end
                     wait ("1s")
                     log("Finding mob..")
                     send ("Tab")
-                    bot.Battle_decider()
+                    Battle_decider()
                 end
             end
     else
         wait ("1s")
         log("Finding mob..")
         send ("Tab")
-        bot.Battle_decider()
+        Battle_decider()
     end
 end
 --Battle
-function bot.Battle()
+function Battle()
     log("attacking")
     local timer = os.time()
     local timer2 = timer + 15
-        while bot.targetHPpercent() > 0 and os.time() < timer2 do
-         --   log(bot.targetHPpercent(),os.time(),bot.Target_Selected())
+        while targetHPpercent() > 0 and os.time() < timer2 do
+         --   log(targetHPpercent(),os.time(),Target_Selected())
             wait ("1s")
-            if bot.targetHPpercent() == 100 and os.time() > timer2 and bot.Target_Selected() == 1 then
+            if targetHPpercent() == 100 and os.time() > timer2 and Target_Selected() == 1 then
                 local timer = os.time()
                 local timer2 = timer + 15
                 log("Target Stucked as more than 5 seconds with full HP")
@@ -171,88 +171,88 @@ function bot.Battle()
             send ("222")
             wait(30)
         end
-        if bot.targetHPpercent() == 0 then
+        if targetHPpercent() == 0 then
             log("KILLED")
-            log(bot.killed(1))
-            bot.Tab()
+            log(killed(1))
+            Tab()
         end
 end
 --Battle Decider
-function bot.Battle_decider()
-    while bot.Target_Selected() == 0 do
-        log("Target_Selected :",bot.Target_Name())
-        bot.Tab()
+function Battle_decider()
+    while Target_Selected() == 0 do
+        log("Target_Selected :",Target_Name())
+        Tab()
     end
-    if bot.Target_Selected() == 1 then
-        log("Target_Selected :",bot.Target_Name())
+    if Target_Selected() == 1 then
+        log("Target_Selected :",Target_Name())
         wait("1s")
     end
-    while bot.Battle_Status() == 1 do
+    while Battle_Status() == 1 do
         log("Somebody else attacking us")
-        bot.Battle()
+        Battle()
     end
-    while bot.HP_Percent() > 50  do
-        log("Current_HP of charName()",bot.HP_Percent())
-        bot.Battle()
+    while HP_Percent() > 50  do
+        log("Current_HP of charName()",HP_Percent())
+        Battle()
     end
 end
 --Mana
-function bot.Mana()
+function Mana()
     return readmem(0x00400000 +0x00C15980, "d")
 end
 -- Current Mana
-function bot.Current_Mana()
-    return readmem(bot.Mana() + 0x324, "d")
+function Current_Mana()
+    return readmem(Mana() + 0x324, "d")
 end
 -- Mana buff
-function bot.Mana_Buff()
-    return readmem(bot.Mana() + 0x2B8, "d")
+function Mana_Buff()
+    return readmem(Mana() + 0x2B8, "d")
 end
 -- Max mana
-function bot.Max_Mana()
-    return readmem(bot.Mana()  + 0x2B4, "d") + bot.Mana_Buff()
+function Max_Mana()
+    return readmem(Mana()  + 0x2B4, "d") + Mana_Buff()
 end
 
 --ManaPercent
-function bot.Mana_Percent()
-   return  ((bot.Current_Mana()/ bot.Max_Mana())*100)
+function Mana_Percent()
+   return  ((Current_Mana()/ Max_Mana())*100)
 end
 --HPPercent
-function bot.HP_Percent()
-   return  ((bot.get_current_HP()/ bot.TOTAL_CHAR_MAX_HP())*100)
+function HP_Percent()
+   return  ((get_current_HP()/ TOTAL_CHAR_MAX_HP())*100)
 end
 
 local kill = 0
 
-function bot.killed(x)
+function killed(x)
 
                kill = kill + x
                log("kill_count :",kill)
 end
-function bot.Moke_Boss()
+function Moke_Boss()
     Boss_Name = "Mo Ke's Follower Leader"
-     if  bot.Target_Name() == Boss_Name and targetHPpercent() > 0 then
-        while bot.Target_Name() == Boss_Name and targetHPpercent() > 0 do
+     if  Target_Name() == Boss_Name and targetHPpercent() > 0 then
+        while Target_Name() == Boss_Name and targetHPpercent() > 0 do
             send ("123123")
          end
 
      else
-         while bot.Target_Name() == Boss_Name and targetHPpercent() == 0 do
+         while Target_Name() == Boss_Name and targetHPpercent() == 0 do
                      log(killed(1))
                      wait ("2s")
                      send ("Tab")
                       wait ("2s")
          end
-         while (not(bot.Target_Name() == Boss_Name)) do
+         while (not(Target_Name() == Boss_Name)) do
             send ("Tab")
          end
      end
 end
-function bot.getConfirmBox()
+function getConfirmBox()
     return readmem(CLIENT + 0xEC2DA4, "d")
 end
 
-function bot.deadbox()
+function deadbox()
     local dead_box = readmem(CLIENT + 0xC2E894, "d")
     if dead_box > 1 then
         return 0
@@ -261,36 +261,36 @@ function bot.deadbox()
         return 1
     end
 end
-function bot.dead()
-   if bot.get_current_HP() < 1 and bot.Battle_Status() == 0 and bot.deadbox() == 1 then
+function dead()
+   if get_current_HP() < 1 and Battle_Status() == 0 and deadbox() == 1 then
        return 1
    else
        return 0
    end
 end
 
-function bot.auto_attack_on_rev(attackkeys)
-    if bot.dead() == 1 and bot.getConfirmBox() == 1 then
+function auto_attack_on_rev(attackkeys)
+    if dead() == 1 and getConfirmBox() == 1 then
         left(442, 334)
     else
-        if  bot.targetHPpercent() > 0 and bot.Target_Selected() == 1 and bot.dead() == 0 then
+        if  targetHPpercent() > 0 and Target_Selected() == 1 and dead() == 0 then
             send (attackkeys)
         end
     end
 end
-function bot.pcp_suwan(attackkeys)
-    if bot.dead() == 1  then
+function pcp_suwan(attackkeys)
+    if dead() == 1  then
         left(508, 467)
     else
-        if  bot.targetHPpercent() > 0 and bot.Target_Selected() == 1 and bot.dead() == 0 then
+        if  targetHPpercent() > 0 and Target_Selected() == 1 and dead() == 0 then
             send (attackkeys)
         end
     end
 end
-function bot.KILLBOSS()
+function KILLBOSS()
 
     --log(Boss_Name)
-    while bot.Target_Name() == Boss_Name and bot.targetHPpercent() > 0 do
+    while Target_Name() == Boss_Name and targetHPpercent() > 0 do
         send ("1")
         wait(100)
     end
@@ -300,5 +300,5 @@ function bot.KILLBOSS()
 end
 
 while true do
-    bot.KILLBOSS()
+    KILLBOSS()
 end
