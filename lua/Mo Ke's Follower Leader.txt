@@ -2,7 +2,7 @@
 //slot {5,6} {hp,mana} pots
 //slot 0 for PetFood which is pending as of now
 --lua
-Boss_Name = "Cha Pin's Brother Cha Hui"
+--Boss_Name = "Cha Pin's Brother Cha Hui"
 log 'clear' log 'mode compact'
 local CLIENT = 0x00400000
 function bot.charName()
@@ -310,5 +310,5 @@ function bot.KILLBOSS()
 end
 
 while true do
-    bot.KILLBOSS()
+    bot.moke()
 end
