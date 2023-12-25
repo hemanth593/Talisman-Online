@@ -43,7 +43,14 @@ function TOTAL_CHAR_MAX_HP()
 end
 
 function targetHP()
-   return readmem(readmem(readmem(readmem(readmem(readmem(0x00400000 +0x00EBFB40, "d") +  0x18 , "d") + 0x16C , "d") + 0x0 , "d") + 0xC , "d") + 0x3B38 , "d")
+    local targetHPPointers = {0x18, 0x16C, 0x0, 0xC, 0x1F8, 0x448, 0xC00}
+    local targetHP = readmem(CLIENT + 0x00EC2D28, "d")
+    for i = 1, #targetHPPointers
+    do
+        targetHP = readmem(targetHP + targetHPPointers[i], "d")
+    end
+
+    return  targetHP
 end
 
 function targetHPpercent()
