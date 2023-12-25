@@ -2,7 +2,7 @@
 //slot {5,6} {hp,mana} pots
 //slot 0 for PetFood which is pending as of now
 --lua
-Boss_Name = "Cha Pin's Brother Cha Hui"
+Boss_Name = "Asura Military Headman"
 
 
 log 'clear' log 'mode compact'
