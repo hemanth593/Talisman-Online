@@ -285,7 +285,7 @@ function bot.pcp_suwan(attackkeys)
     end
 end
 
-function moke()
+function bot.moke()
     local Boss_Name = "Mo Ke's Follower Leader"
     --log(Boss_Name)
     while bot.Target_Name() == Boss_Name and bot.targetHPpercent() > 0 do
@@ -296,7 +296,7 @@ function moke()
     send ("Tab")
     wait(100)
 end
-function chapin_boss()
+function bot.chapin_boss()
     local Boss_Name = "Cha Pin's Brother Cha Hui"
     --log(Boss_Name)
     while bot.Target_Name() == Boss_Name and bot.targetHPpercent() > 0 do
