@@ -3,7 +3,7 @@
 //slot 0 for PetFood which is pending as of now
 --lua
 Boss_Name = "Asura Military Headman"
-
+attackkeys = 123
 
 log 'clear' log 'mode compact'
 local CLIENT = 0x00400000
@@ -291,7 +291,7 @@ function KILLBOSS()
 
     --log(Boss_Name)
     while Target_Name() == Boss_Name and targetHPpercent() > 0 do
-        send ("1")
+        send (attackkeys)
         wait(100)
     end
     wait(100)
