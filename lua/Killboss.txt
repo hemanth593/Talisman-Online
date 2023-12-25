@@ -1,8 +1,5 @@
-//slot 1 for attack
-//slot {5,6} {hp,mana} pots
-//slot 0 for PetFood which is pending as of now
 --lua
-Boss_Name = "Asura Military Headman"
+Boss_Name = "Santa Mushroom"
 attackkeys = 123
 
 log 'clear' log 'mode compact'
@@ -52,7 +49,6 @@ function targetHP()
 
     return  targetHP
 end
-
 function targetHPpercent()
         local max = 597
         local min = 460
@@ -113,19 +109,20 @@ function Target_Selected()
 end
 
 function Target_Name()
-    local targetNamePointers = {0x18, 0xB1C, 0x0, 0xC, 0xD9C}
-    local Target_Name = readmem(CLIENT + 0x012C2D28, "d")
-    for i = 1, #targetNamePointers
-    do
-        Target_Name = readmem(Target_Name + targetNamePointers[i], "d")
-    end
+   local targetNameOffsets = {0x18, 0xB1C, 0x0, 0xC, 0xD9C}
+local TARGET_HP_NAME_POINTER = readmem(0x012C2D28, "d")
+for i = 1, #targetNameOffsets
+do
+    TARGET_HP_NAME_POINTER =
+        readmem(TARGET_HP_NAME_POINTER + targetNameOffsets[i], "d")
+end
 
-    local name = readmem(Target_Name + 0x9AC, "s", 51)
+    local name = readmem(TARGET_HP_NAME_POINTER + 0x9AC, "s", 51)
 
     -- If name is alphanumeric return it safely
     if string.match(name, "^[%w ']+$") then return name
     else
-        return readmem(readmem(Target_Name + 0x9AC, "d") + 0x0, "s", 51)
+        return readmem(readmem(TARGET_HP_NAME_POINTER + 0x9AC, "d") + 0x0, "s", 51)
     end
 end
 function Char_Sit()
@@ -137,70 +134,6 @@ function mount_status()
         return 1
     else
         return 0
-    end
-end
-
---Tab
-function Tab()
-    if HP_Percent() < 50 or Mana_Percent < 30 then
-            if Battle_Status() == 0 then
-                if Char_Sit() == 0 then
-                    while HP_Percent() < 95 or Mana_Percent < 95 do
-                        send ("56")
-                    end
-                    wait ("1s")
-                    log("Finding mob..")
-                    send ("Tab")
-                    Battle_decider()
-                end
-            end
-    else
-        wait ("1s")
-        log("Finding mob..")
-        send ("Tab")
-        Battle_decider()
-    end
-end
---Battle
-function Battle()
-    log("attacking")
-    local timer = os.time()
-    local timer2 = timer + 15
-        while targetHPpercent() > 0 and os.time() < timer2 do
-         --   log(targetHPpercent(),os.time(),Target_Selected())
-            wait ("1s")
-            if targetHPpercent() == 100 and os.time() > timer2 and Target_Selected() == 1 then
-                local timer = os.time()
-                local timer2 = timer + 15
-                log("Target Stucked as more than 5 seconds with full HP")
-                Tab()
-            end
-            send ("222")
-            wait(30)
-        end
-        if targetHPpercent() == 0 then
-            log("KILLED")
-            log(killed(1))
-            Tab()
-        end
-end
---Battle Decider
-function Battle_decider()
-    while Target_Selected() == 0 do
-        log("Target_Selected :",Target_Name())
-        Tab()
-    end
-    if Target_Selected() == 1 then
-        log("Target_Selected :",Target_Name())
-        wait("1s")
-    end
-    while Battle_Status() == 1 do
-        log("Somebody else attacking us")
-        Battle()
-    end
-    while HP_Percent() > 50  do
-        log("Current_HP of charName()",HP_Percent())
-        Battle()
     end
 end
 --Mana
