@@ -3,7 +3,7 @@ log 'clear' log 'mode compact'
 local bot = require("Bot/bot")
 local BC = require("BC/BC")
 --Set your keys
-startreseterscritpt = 3
+startreseterscritpt = 1
 mountkey = 4
 healskill = 8    --put Fairy Healing skill here / Wizz superskill healing
 attackskills = 231
