@@ -1,0 +1,10 @@
+--lua
+log 'clear' log 'mode compact'
+local bot = require("Bot/bot")
+
+attackskills = 1236789
+
+while true do
+      bot.auto_attack_on_rev()
+     -- bot.pcp_suwan()
+end

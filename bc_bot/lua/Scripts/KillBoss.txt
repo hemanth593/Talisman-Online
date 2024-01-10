@@ -1,0 +1,10 @@
+--lua
+log 'clear' log 'mode compact'
+local bot = require("Bot/bot")
+local BC = require("BC/BC")
+Boss_Name == "TYPE BOSS NAME HERE"
+attackskills = "F5"
+
+while true do
+     bot.KILLBOSS()
+end

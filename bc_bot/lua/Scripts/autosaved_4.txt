@@ -1,0 +1,15 @@
+--lua
+log 'clear' log 'mode compact'
+function Invisiblemode()
+
+	log("Resetting screen and zoom")
+	send ("F12")
+	wait("1s")
+	send_down ("F12", 1000) -- hold down the 'q' key for 3 seconds (1 sec = 1000 ms.)
+	send_down ("@", 1000)
+	send_up("F12",1000)
+	send_up("@",1000)
+	send_down ("{down}", 3000)
+	send_up("{down}")
+end
+Invisiblemode()

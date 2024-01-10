@@ -1,0 +1,12 @@
+--lua
+log 'clear' log 'mode compact'
+local bot = require("BC/bot")
+local BC = require("BC/BC")
+stonecitycharm = 5
+mount = 4
+attackskills = 123
+startreseterscritpt = 4
+
+while true do
+   BC.start()
+end

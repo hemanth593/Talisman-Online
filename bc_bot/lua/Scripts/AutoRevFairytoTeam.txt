@@ -1,0 +1,22 @@
+--lua
+log 'clear' log'mode compact'
+--resolution 1024 x 768 . donot resize client
+local revskillkey = 7
+while true do
+  left (25, 201 )
+  wait(30)
+  send(revskillkey)
+  wait(30)
+  left (21, 283 )
+  wait(30)
+  send(revskillkey)
+  wait(30)
+  left (22, 365 )
+  wait(30)
+  send(revskillkey)
+  wait(30)
+  left (22, 441 )
+  wait(30)
+  send(revskillkey)
+  wait(30)
+end

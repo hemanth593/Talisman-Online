@@ -1,0 +1,22 @@
+left 866, 57
+wait 1s
+left 981, 57
+wait 1s
+left 293, 330
+wait 1s
+left 410, 535
+wait 15s
+repeat 10
+    repeat 8
+        right 473, 392
+    end_repeat 8
+    wait 1s
+    left 315, 398
+    wait 1s
+    repeat 24
+            left 202, 330
+    end_repeat 24
+    left 180, 713
+ end_repeat 10
+ start_script 2
+ stop_script
