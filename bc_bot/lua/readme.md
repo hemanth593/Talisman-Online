@@ -14,7 +14,7 @@ To use BCBOT, you have two options:
     - To copy this you need to go to https://github.com/hemanth593/Talisman-Online/tree/main and click on CODE and download zip . 
 
 2. **Direct Download:**
-    - Download the latest version of BCBOT as a ZIP file from the [releases page](https://github.com/hemanth593/Talisman-Online/blob/main/bc_bot/lua/BCBOT.zip).
+    - Download the latest version of BCBOT as a ZIP file from the [releases page](https://github.com/hemanth593/Talisman-Online/raw/main/bc_bot/lua/BCBOT.zip).
     - Extract the contents of the ZIP file to your desired location.
 
 ## Getting Started
