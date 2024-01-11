@@ -345,8 +345,9 @@ function BC.MovingtoBoss()
 	    end
 end	
 function BC.TeleporttoBoss()
-	    log("Moving to Boss")
-	    wait("3s")
+	log("Moving to Boss")
+	wait("3s")
+	if  bot.getLocation() == "Secret Cemetery" then
 		while bot.getLocation_cords(0) == "223" and bot.getLocation_cords(1) == "44" do
 	    		while bot.Dialogue() == 0 do
 	        		wait(100)
@@ -366,6 +367,10 @@ function BC.TeleporttoBoss()
 	    		BC.Viewreset()
 	    		wait(100)
 		end
+	else
+		BC.attackBlazeSkullMarshal()
+		BC.start()
+	end
 end
 
 function BC.InsideBC()
