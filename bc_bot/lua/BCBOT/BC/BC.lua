@@ -276,7 +276,11 @@ function BC.MovingtoAltar()
 	        { "223", "44", 881, 111 }
 	}
 	
-	
+	if not (bot.getLocation_cords(0) == "423" and bot.getLocation_cords(1) == "53" ) then
+		log("Restarting Script")
+		BC.attack(attackskills)
+		BC.Start()
+	end
 	    for i, coords in ipairs(coordinatesToCheck) do
 	        local nextCoords = coordinatesToCheck[i % #coordinatesToCheck + 1]
 		local resetclock = os.time()
@@ -297,8 +301,7 @@ function BC.MovingtoAltar()
 					wait("2s")
     				end
 				BC.attack(attackskills)
-				BC.GotoStoneCity()
-				BC.outsideBC()
+				BC.Start()
 			end
 	        end
 	    end
@@ -370,7 +373,7 @@ function BC.TeleporttoBoss()
 	else
 		BC.attackBlazeSkullMarshal()
 		BC.start()
-	end
+	end	
 end
 
 function BC.InsideBC()
@@ -380,7 +383,9 @@ function BC.InsideBC()
 	BC.Leaveteam()
 	wait("2s")
 	BC.MovingtoAltar()
+	wait("1s")
 	BC.TeleporttoBoss()
+	wait("1s")
 	BC.MovingtoBoss()  
 	wait("5s")
 	BC.attackBlazeSkullMarshal()
@@ -524,6 +529,7 @@ function BC.MovingfromVastmountain()
 		end
    		wait("1s")
 		while bot.SellDialogue() == 1 and (timerclock() <= resettime) do
+			log("Selling Junk to clear space in inventory")
         		local q = 0
        	 		repeat
             			q = q + 1
