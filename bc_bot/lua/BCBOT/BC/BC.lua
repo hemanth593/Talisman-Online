@@ -350,7 +350,8 @@ end
 function BC.TeleporttoBoss()
 	log("Moving to Boss")
 	wait("3s")
-	if  bot.getLocation() == "Secret Cemetery" then
+	if (not (bot.getLocation() == "Secret Cemetery")) then
+	log("AT Secret Altar Tele")
 		while bot.getLocation_cords(0) == "223" and bot.getLocation_cords(1) == "44" do
 	    		while bot.Dialogue() == 0 do
 	        		wait(100)
