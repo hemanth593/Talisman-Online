@@ -627,6 +627,10 @@ function BC.outsideBC()
 	log("Entered Cave")
 	if timerclock() <= resettime then
 		BC.InsideBC()
+	else	
+		BC.attackBlazeSkullMarshal()
+		BC.GotoStoneCity()
+		BC.outsideBC()
 	end
 end
 function BC.start()
