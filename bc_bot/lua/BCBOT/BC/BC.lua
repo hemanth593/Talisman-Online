@@ -387,6 +387,10 @@ function BC.InsideBC()
 	wait("1s")
 	BC.TeleporttoBoss()
 	wait("1s")
+	if secretcemetryheal == "YES" then 
+		Healthcheck()
+	end
+	wait("1s")
 	BC.MovingtoBoss()  
 	wait("5s")
 	BC.attackBlazeSkullMarshal()
