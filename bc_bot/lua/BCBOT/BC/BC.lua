@@ -276,7 +276,7 @@ function BC.MovingtoAltar()
 	        { "223", "44", 881, 111 }
 	}
 	
-	if not (bot.getLocation_cords(0) == "423" and bot.getLocation_cords(1) == "53" ) then
+	if not ( bot.getLocation_cords(0) == "423" and bot.getLocation_cords(1) == "53" ) then
 		log("Restarting Script")
 		BC.attack(attackskills)
 		BC.Start()
@@ -301,7 +301,7 @@ function BC.MovingtoAltar()
 					wait("2s")
     				end
 				BC.attack(attackskills)
-				BC.Start()
+				BC.start()
 			end
 	        end
 	    end
@@ -342,7 +342,7 @@ function BC.MovingtoBoss()
 				wait("5s")
 				BC.attackBlazeSkullMarshal()
 				BC.GotoStoneCity()
-				BC.outsideBC()
+				BC.start()
 			end
 	        end
 	    end
@@ -642,7 +642,7 @@ function BC.outsideBC()
 	else	
 		BC.attackBlazeSkullMarshal()
 		BC.GotoStoneCity()
-		BC.outsideBC()
+		BC.start()
 	end
 end
 function BC.start()
