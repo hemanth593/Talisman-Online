@@ -1,4 +1,5 @@
---lua
+-- lua
+--   Watch video on youtube : https://www.youtube.com/watch?v=2aKe1FYOxbQ
 log 'clear' log 'mode compact'
 local bot = require("Bot/bot")
 local BC = require("BC/BC")
@@ -6,12 +7,14 @@ local BC = require("BC/BC")
 startreseterscritpt = 1
 mountkey = 4
 healskill = 8    --put Fairy Healing skill here / Wizz superskill healing
-attackskills = 231
-aoe = 23        --For Fairy put it as primary skill / Rest of the chars put instant and aoe slot number
+attackskills = 21 -- for wizz donot aoe skills here  for tamer add aoe skills too
+aoe = 21        --For Fairy put it as primary skill / Rest of the chars put instant and aoe slot number
 stonecitycharm = 5
 buff = 9       -- Any Buff if required
 Petfood = 0
-Fairy = "NO"      --if your character type is Fairy then YES or else NO
+WeakChar = "YES" --if you're strong put NO else YES
+--{ if WeakChar ==  YES ,add  battlpots to attkskill and healing pot to number 8}
+Fairy = "YES"      --if your character type is Fairy then YES or else NO
 
 --Script
 BC.Invisiblemode()
