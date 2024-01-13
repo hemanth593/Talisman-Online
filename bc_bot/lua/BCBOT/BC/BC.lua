@@ -1,6 +1,7 @@
 --[[ Reading game memory --]]
 
 
+
 local BC = {}
 local bot = require("Bot/bot")
 --local cave = require("BC/InsideBC")
@@ -102,8 +103,6 @@ function Healthcheck()
 	wait(300)
 	send("F1")
 	wait(300)
-	send(buff)
-	wait(300)
 	while bot.CharHPpercent() < 95 do
 		if bot.mount_status() == 1 then
 			send(mountkey)
@@ -172,6 +171,15 @@ function BC.Invisiblemode()
 	send_down ("{down}", 3000)
 	send_up("{down}")
 end
+function BC.autobuff()
+	wait(300)
+	send("F1")
+	wait(300)
+	send(buff1)
+	wait(1000)
+	send(buff2)
+	wait(1000)
+end
 function BC.GotoStoneCity()
 	if bot.mount_status() == 1 then
 		wait(300)
@@ -180,6 +188,7 @@ function BC.GotoStoneCity()
 		log("Mount Down to go to StoneCity")
     	end
 	BC.attackBlazeSkullMarshal()
+	BC.autobuff()
     	while not (bot.getLocation() == "Stone City" and bot.getLocation_cords(0) == "178" and bot.getLocation_cords(1) == "-515") do
         	wait(300)
 		send(stonecitycharm)
@@ -281,6 +290,9 @@ function BC.MovingtoAltar()
 		BC.attack(attackskills)
 		BC.Start()
 	end
+	wait(300)
+	send(windcontrolling)
+	wait(300)
 	    for i, coords in ipairs(coordinatesToCheck) do
 	        local nextCoords = coordinatesToCheck[i % #coordinatesToCheck + 1]
 		local resetclock = os.time()
@@ -387,7 +399,7 @@ function BC.InsideBC()
 	wait("1s")
 	BC.TeleporttoBoss()
 	wait("1s")
-	if secretcemetryheal == "YES" then 
+	if WeakChar == "YES" then 
 		Healthcheck()
 	end
 	wait("1s")
