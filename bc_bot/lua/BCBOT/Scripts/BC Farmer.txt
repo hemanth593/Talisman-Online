@@ -6,11 +6,13 @@ local BC = require("BC/BC")
 --Set your keys
 startreseterscritpt = 1
 mountkey = 4
+windcontrolling = "F2"
 healskill = 8    --put Fairy Healing skill here / Wizz superskill healing
 attackskills = 21 -- for wizz donot aoe skills here  for tamer add aoe skills too
 aoe = 21        --For Fairy put it as primary skill / Rest of the chars put instant and aoe slot number
 stonecitycharm = 5
-buff = 9       -- Any Buff if required
+buff1 = "F7"
+buff2 = "F8"      -- Any Buff if required
 Petfood = 0
 WeakChar = "YES" --if you're strong put NO else YES
 --{ if WeakChar ==  YES ,add  battlpots to attkskill and healing pot to number 8}
