@@ -9,6 +9,25 @@ local bot = require("Bot/bot")
 BC.potskey = {
     hp = 6, mana = 7
 }
+function BC.mount()
+	if bot.mount_status() == 0 then
+		send(mountkey)
+		if bot.mount_status() >= 0 then
+			log("Mount up")
+		end
+		wait("5s")
+    	end
+end
+function BC.unmount()
+	if bot.mount_status() >= 0 then
+		send(mountkey)
+		if bot.mount_status() == 0 then
+			log("Mount Down")
+		end
+		wait("2s")
+    	end
+end
+
 function BC.findcourage()
 	log("Opening Bag")
 	send("i")
@@ -104,11 +123,7 @@ function Healthcheck()
 	send("F1")
 	wait(300)
 	while bot.CharHPpercent() < 95 do
-		if bot.mount_status() == 1 then
-			send(mountkey)
-			log("Mount Down to Heal")
-			wait("2s")
-    		end
+		BC.unmount()
 		if Fairy == "YES" then 
 			wait(300)
 			send(healskill)
@@ -120,15 +135,12 @@ function Healthcheck()
 			send(BC.potskey.hp) wait(500)
 			send(healskill) wait(500)
 			log("Waiting to heal till 100% and  Current HP in %  :", bot.CharHPpercent())
-			wait("15s")
+			wait("16s")
+			
 		end
 	end
 	log("health is full" )
-	if bot.mount_status() == 0 then
-		send(mountkey)
-		log("Mount up to move inside cave")
-		wait("5s")
-    	end
+	BC.mount()
 end
 
 function convert_epoch_to_normal()
@@ -161,15 +173,23 @@ function BC.StoneCity()
 end
 function BC.Invisiblemode()
 	BC.Viewreset()
+ 	wait(300)
+    	send ("@")
+ 	wait(300)
+	send ("F12")
+ 	wait(300)
 	log("Resetting screen and zoom")
 	send ("F12")
-	wait("1s")
+ 	wait(300)
 	send_down ("F12", 1000) -- hold down the 'q' key for 3 seconds (1 sec = 1000 ms.)
 	send_down ("@", 1000)
 	send_up("F12",1000)
 	send_up("@",1000)
 	send_down ("{down}", 3000)
 	send_up("{down}")
+ 	wait(300)
+    	send ("@")
+ 	wait(300)
 end
 function BC.autobuff()
 	wait(300)
@@ -395,6 +415,7 @@ function BC.InsideBC()
 	wait(500)
 	BC.Leaveteam()
 	wait("2s")
+	BC.mount()
 	BC.MovingtoAltar()
 	wait("1s")
 	BC.TeleporttoBoss()
@@ -594,11 +615,7 @@ function BC.MovingfromGhostdinwoods()
 	while BC.Ghostdinwoods() == 1 and (timerclock() <= resettime) do
     		log("In GhostDinWoods")
     		BC.Addteam()
-    		if bot.mount_status() == 0 then
-			send(mountkey)
-			wait("4s")
-        		log("Mounted")
- 		end
+		BC.mount()
     		if bot.Surroundings() == 0 then
         		wait(100)
         		left (975, 57 )
