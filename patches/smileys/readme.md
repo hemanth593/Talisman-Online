@@ -17,12 +17,6 @@ Follow these simple steps to integrate the new features into your game:
    - Copy the `local` and `ui` folders from the extracted content.
    - Paste these folders into your game directory, replacing any existing folders if prompted.
 
-4. **Optional: Zoom Configuration**
-   - If you do not wish to use the infinite zoom feature, you can remove the following file:
-     - `local\euramerican\config\client_user.ini`
-
-   Note: Removing this file will disable the zoom functionality.
-
 ## Usage
 
 Once you have completed the installation, launch your game, and you should now have access to the new smileys and the infinite zoom feature.
