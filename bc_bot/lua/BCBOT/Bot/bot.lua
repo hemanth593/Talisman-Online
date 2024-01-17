@@ -33,7 +33,7 @@ function bot.get_basic_max_HP()
 end
 
 function bot.TOTAL_CHAR_MAX_HP()
-    local maxhp = floor((((bot.get_percent_HP() - 100) / 100) * (bot.get_basic_max_HP() + bot.get_pethp_skillpoints())) + (bot.get_basic_max_HP() + bot.get_pethp_skillpoints()))
+    local maxhp = math.floor((((bot.get_percent_HP() - 100) / 100) * (bot.get_basic_max_HP() + bot.get_pethp_skillpoints())) + (bot.get_basic_max_HP() + bot.get_pethp_skillpoints()))
      return maxhp
 end
 
