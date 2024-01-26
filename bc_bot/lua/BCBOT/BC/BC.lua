@@ -33,21 +33,97 @@ function BC.findcourage()
 	send("i")
 	log("Opened Bag")
 	wait("2s")
-	showwindow()
+	--showwindow()
 	log("Finding Courage")
 	wait("2s")
-	local arr, a = findimage (5, 7, 1018, 718, {"Package.bmp"}, 2, 70, 20, 5) -- search for an image, must be in the folder with the pilot
-	hint (a) -- search result, hint in the lower right corner
-	if arr then -- if found
-    		log("Package of Courage Badge Found :" .. #arr)
-    		for i=1, #arr do
-        		double_right (arr[i][1], arr[i][2]) -- clicked on each
-        		wait (1000) -- pause 1000 ms (1 sec)
+	local handle = workwindow()
+	local startX, startY, endX, endY = 1, 1, 1024, 799 -- search coordinates
+	--local path = [["stonecitycharmzero.bmp"]] -- path to the image
+	local path = [["Package.bmp"]] -- path to the image
+	if handle then
+    		local arr, a = findimage (startX, startY, endX, endY, {path}, workwindow()) -- image search
+	    	hint (a) -- search result, hint in the lower right corner
+    		if arr then -- if found
+	        	log("Package of Courage Badge Found :" .. #arr)
+         		right (arr[1][1], arr[1][2], handle) -- clicked, left does not work in all applications
+        		-- move (arr[1][1], arr[1][2], handle[1][1]) -- move the cursor over the image (uncomment the line for it to work)
+	    	else
+        		log("Image not found")
     		end
+		else
+    		log("Window not found")
 	end
 	wait(30)
 	send("i")
 	wait("2s")
+end
+function BC.BuyStoneCityCharm()
+    BC.Viewreset()
+    BC.Surroundings()
+    left(318, 327) -- click on richman
+    log("Moving to Richman to Buy Stonecitycharm")
+    wait("20s")
+    left(974, 58) -- close surroundings
+    wait(300)
+        local m = 0
+        repeat
+        m = m + 1
+        local n = 0
+        repeat
+            n = n + 1
+            right(473, 392)
+        until n == 8
+        wait(2000)
+        left(315, 398)
+        wait(1000)
+        local o = 0
+        repeat -- 24
+            o = o + 1
+            wait(100)
+            left(202, 330)
+        until o == 2
+        wait(500)
+        left(180, 713)
+        wait(500)
+    until m == 10 -- Added missing "until" to close the outer "repeat" block
+end
+
+function BC.find_image(imagename)
+	local handle = workwindow()
+	local startX, startY, endX, endY = 1, 1, 1024, 799 -- search coordinates
+	--local path = [["stonecitycharmzero.bmp"]] -- path to the image
+	local path = [[image_name]] -- path to the image
+	if handle then
+	    	log(workwindow())
+    		local arr, a = findimage (startX, startY, endX, endY, {path}, workwindow()) -- image search
+	    	hint (a) -- search result, hint in the lower right corner
+    		if arr then -- if found
+	        	--log("Image found at coordinates X= " .. arr[1][1] .. " Y= " .. arr[1][2])
+			return 1
+         		--right (arr[1][1], arr[1][2], handle) -- clicked, left does not work in all applications
+        		-- move (arr[1][1], arr[1][2], handle[1][1]) -- move the cursor over the image (uncomment the line for it to work)
+	    	else
+        		--log("Image not found")
+			return 0
+    		end
+		else
+    		--log("Window not found")
+		return 2
+	end
+end
+function BC.verifystonecharm()
+	local verifycharm = BC.find_image("stonecitycharmzero.bmp")
+	if verifycharm == 0 then
+		log("StoneCityCharm Unavailable")
+		BC.BuyStoneCityCharm()
+		BC.GotoStoneCity()
+	end
+	if verifycharm == 1 then
+		log("StoneCityCharm Available")
+	end
+	if verifycharm == 2 then
+		log("Window Not Selected")
+	end		
 end
 function BC.clickCoordinates()
 	log("Opening Bag")
@@ -656,6 +732,7 @@ function timerclock()
 end
 function BC.outsideBC()
 	BC.Viewreset()
+	BC.verifystonecharm()
 	epoch1 = os.time()
 	resettime = 120
 	log("Started BC time :",BC.convert_epoch_to_normal())
