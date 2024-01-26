@@ -90,12 +90,13 @@ end
 
 function BC.find_image(imagename)
 	local handle = workwindow()
+	log(imagename)
 	local startX, startY, endX, endY = 1, 1, 1024, 799 -- search coordinates
 	--local path = [["stonecitycharmzero.bmp"]] -- path to the image
-	local path = [[image_name]] -- path to the image
+	--local path = [[image_name]] -- path to the image
 	if handle then
 	    	log(workwindow())
-    		local arr, a = findimage (startX, startY, endX, endY, {path}, workwindow()) -- image search
+    		local arr, a = findimage (startX, startY, endX, endY, {imagename}, workwindow()) -- image search
 	    	hint (a) -- search result, hint in the lower right corner
     		if arr then -- if found
 	        	--log("Image found at coordinates X= " .. arr[1][1] .. " Y= " .. arr[1][2])
@@ -113,12 +114,12 @@ function BC.find_image(imagename)
 end
 function BC.verifystonecharm()
 	local verifycharm = BC.find_image("stonecitycharmzero.bmp")
-	if verifycharm == 0 then
+	if verifycharm == 1 then
 		log("StoneCityCharm Unavailable")
 		BC.BuyStoneCityCharm()
 		BC.GotoStoneCity()
 	end
-	if verifycharm == 1 then
+	if verifycharm == 0 then
 		log("StoneCityCharm Available")
 	end
 	if verifycharm == 2 then
