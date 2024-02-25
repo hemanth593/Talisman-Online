@@ -1,0 +1,8 @@
+-- lua
+--   Watch video on youtube : https://www.youtube.com/watch?v=2aKe1FYOxbQ
+log 'clear' log 'mode compact'
+local bot = require("Bot/bot")
+local BC = require("BC/BC")
+while true do
+log(bot.HP_Percent())
+end

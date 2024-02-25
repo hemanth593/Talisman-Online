@@ -1,5 +1,6 @@
 -- lua
 --   Watch video on youtube : https://www.youtube.com/watch?v=2aKe1FYOxbQ
+-- default setting is for tamer
 log 'clear' log 'mode compact'
 local bot = require("Bot/bot")
 local BC = require("BC/BC")
@@ -8,15 +9,17 @@ startreseterscritpt = 1
 mountkey = 4
 windcontrolling = "F2"
 healskill = 8    --put Fairy Healing skill here / Wizz superskill healing
-attackskills = 21 -- for wizz donot aoe skills here  for tamer add aoe skills too
-aoe = 21        --For Fairy put it as primary skill / Rest of the chars put instant and aoe slot number
+attackskills = 321 -- for wizz donot add aoe skills here  for tamer add aoe skills too
+aoe = 23        --For Fairy put same as primary skill / Rest of the chars put instant and aoe slot number
 stonecitycharm = 5
 buff1 = "F7"
 buff2 = "F8"      -- Any Buff if required
 Petfood = 0
-WeakChar = "YES" --if you're strong put NO else YES
+ADDTEAM = "BLOCK"  -- if add teammate from blocklist then put "BLOCK"
+--- by default FOE list is set even if you didn't set it
+WeakChar = "NO" --if you're strong put NO else YES
 --{ if WeakChar ==  YES ,add  battlpots to attkskill and healing pot to number 8}
-Fairy = "YES"      --if your character type is Fairy then YES or else NO
+Fairy = "NO"      --if your character type is Fairy then YES or else NO
 
 --Script
 BC.Invisiblemode()

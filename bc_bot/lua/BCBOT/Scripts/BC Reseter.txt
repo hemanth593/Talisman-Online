@@ -1,8 +1,13 @@
+//  Watch video on youtube : https://www.youtube.com/watch?v=2aKe1FYOxbQ
 //the one who you are teaming from your mainchar needs to be on your foelist
 //Make sure only one person in foe list
 //resolution 1024x768
-set timer 0
-while timer < 15000
-left 446, 331
-end_while
-stop_script
+-- lua
+log 'clear' log 'mode compact'
+local bot = require("Bot/bot")
+if  bot.getConfirmBox() > 0 then
+     wait(1000)
+     left(446, 331)
+     wait(1000)
+end
+stop_script(1)
