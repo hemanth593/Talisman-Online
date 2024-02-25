@@ -320,5 +320,96 @@ function bot.Surroundings()
         end
     end
 end
+function bot.find_image(imagename)
+	local handle = workwindow()
+	--log(imagename)
+	local startX, startY, endX, endY = 1, 1, 1024, 799 -- search coordinates
+	--local path = [["stonecitycharmzero.bmp"]] -- path to the image
+	--local path = [[image_name]] -- path to the image
+	if handle then
+	    	--log(workwindow())
+    		local arr, a = findimage (startX, startY, endX, endY, {imagename}, workwindow(), 100, -1, 5) -- image search
+	    	hint (a) -- search result, hint in the lower right corner
+    		if arr then -- if found
+	        	--log("Image found at coordinates X= " .. arr[1][1] .. " Y= " .. arr[1][2])
+			return 1
+         		--right (arr[1][1], arr[1][2], handle) -- clicked, left does not work in all applications
+        		-- move (arr[1][1], arr[1][2], handle[1][1]) -- move the cursor over the image (uncomment the line for it to work)
+	    	else
+        		--log("Image not found")
+			return 0
+    		end
+		else
+    		--log("Window not found")
+		return 2
+	end
+end
+function bot.count_image(imagename4)
+	local handle = workwindow()
+	local startX, startY, endX, endY = 1, 1, 1024, 799 -- search coordinates
+	if handle then
+    		local arr, a = findimage (startX, startY, endX, endY, {imagename4}, workwindow(), 100, -1, 5) -- image search
+	    	hint (a) -- search result, hint in the lower right corner
+    		if arr then -- if found
+	        	log("Found :" .. #arr)
 
+		--	for j=1, #arr do
+         		--	left (arr[1][1] +18 , arr[1][2] + 7, handle) -- clicked, left does not work in all applications
+			--	log(arr[1][1], arr[1][2], handle)
+			--	wait(500)
+        			-- move (arr[1][1], arr[1][2], handle[1][1]) -- move the cursor over the image (uncomment the line for it to work)
+		--	end
+    		end
+		else
+    		log("Window not found")
+	end
+end
+function bot.clickimage(imagename1)
+	local handle = workwindow()
+	local startX, startY, endX, endY = 1, 1, 1024, 799 -- search coordinates
+	if handle then
+    		local arr, a = findimage (startX, startY, endX, endY, {imagename1}, workwindow(), 100, -1, 5) -- image search
+	    	hint (a) -- search result, hint in the lower right corner
+    		if arr then -- if found
+	        	log("Found :" .. #arr)
+		--	for j=1, #arr do
+         			left (arr[1][1] +18 , arr[1][2] + 7, handle) -- clicked, left does not work in all applications
+				log(arr[1][1], arr[1][2], handle)
+				wait(500)
+        			-- move (arr[1][1], arr[1][2], handle[1][1]) -- move the cursor over the image (uncomment the line for it to work)
+		--	end
+    		end
+		else
+    		log("Window not found")
+	end
+end
+function bot.surrounding(name)
+    while bot.find_image("surroundings.bmp") == 0 do
+        left(978, 58)
+        wait(500)
+    end
+    if  bot.find_image("surroundings.bmp") == 1 then
+        left(553, 544)
+        wait(40)
+        send(name)
+        wait(40)
+        left(378, 263)
+        wait(200)
+        left (424, 539 )
+        wait(200)
+    end
+end
+function bot.sscgivequest(image2)
+        while bot.find_image("mysticbeliever.bmp") == 0 do
+            double_right(469, 426 )
+        end
+       if bot.find_image(image2) == 1 then
+           bot.clickimage(image2)
+           wait("2s")
+           if bot.find_image("quest.bmp") == 1 then
+            -- bot.clickimage("accomplish.bmp")
+           end
+           wait("1s")
+       end
+end
 return bot
