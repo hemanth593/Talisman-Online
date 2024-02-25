@@ -50,12 +50,15 @@ function BC.findcourage()
 	--local path = [["stonecitycharmzero.bmp"]] -- path to the image
 	local path = [["Package.bmp"]] -- path to the image
 	if handle then
-    		local arr, a = findimage (startX, startY, endX, endY, {path}, workwindow()) -- image search
+    		local arr, a = findimage (startX, startY, endX, endY, {path}, workwindow(), 90, -1, 5) -- image search
 	    	hint (a) -- search result, hint in the lower right corner
     		if arr then -- if found
 	        	log("Package of Courage Badge Found :" .. #arr)
-         		right (arr[1][1], arr[1][2], handle) -- clicked, left does not work in all applications
-        		-- move (arr[1][1], arr[1][2], handle[1][1]) -- move the cursor over the image (uncomment the line for it to work)
+			for j=1, #arr do 
+         			double_right (arr[j][1], arr[j][2], handle) -- clicked, left does not work in all applications
+				wait(1000)
+        			-- move (arr[1][1], arr[1][2], handle[1][1]) -- move the cursor over the image (uncomment the line for it to work)
+			end
 	    	else
         		log("Package not found")
     		end
@@ -151,7 +154,7 @@ function BC.find_image(imagename)
 	--local path = [[image_name]] -- path to the image
 	if handle then
 	    	--log(workwindow())
-    		local arr, a = findimage (startX, startY, endX, endY, {imagename}, workwindow()) -- image search
+    		local arr, a = findimage (startX, startY, endX, endY, {imagename}, workwindow(), 90, -1, 5) -- image search
 	    	hint (a) -- search result, hint in the lower right corner
     		if arr then -- if found
 	        	--log("Image found at coordinates X= " .. arr[1][1] .. " Y= " .. arr[1][2])
@@ -219,45 +222,46 @@ function BC.EquipCorrectGears()
         	right(coord[1], coord[2])
         	wait("1s")
 	end
-	wait("2s")
-	
+	wait("2s")	
 end
-function BC.foelist()
-        wait("1s")
-	left(626, 187 ) -- Foe list
-        wait("1s")
-	right(585, 273 )-- Foe list
-        wait("2s")
-	left(597, 344 )-- Foe list
-end
-function BC.blocklist()
-        wait("1s")
-        left(700, 189 )--blocklist
-        wait("1s")
-        right(577, 253 )--blocklist
-        wait("2s")
-    	left(619, 324 )--blocklist
-        wait("5s")
-end
+
 function BC.Addteam()
          wait("1s")
-         send("f")
+         left(745, 745)
          wait("1s")
 	 BC.Viewreset()   	
 	if ADDTEAM == "FOE" then
-		BC.foelist()		
+		wait("1s")
+		left(626, 187 ) -- Foe list
+        	wait("1s")
+		right(585, 273 )-- Foe list
+        	wait("2s")
+		left(597, 344 )-- Foe list
+        	wait("1s")
+        	start_script (startreseterscritpt)
+		log("Initiated Reseter Script")
+        	wait("1s")
+        	if BC.find_image("foelist.bmp") == 1 then
+        		left(745, 745)
+        		wait("1s")
+		end		
 	end
 	if ADDTEAM == "BLOCK" then
-		BC.blocklist()	
-	else
-		BC.foelist()	
+		        wait("1s")
+        	left(700, 189 )--blocklist
+        	wait("1s")
+        	right(577, 253 )--blocklist
+        	wait("2s")
+    		left(619, 324 )--blocklist
+        	wait("1s")
+        	start_script (startreseterscritpt)
+		log("Initiated Reseter Script")
+        	wait("1s")
+		if BC.find_image("blocklist.bmp") == 1 then
+        		left(745, 745)
+        		wait("3s")
+		end		
 	end
-        wait("5s")
-        start_script (startreseterscritpt)
-	log("Initiated Reseter Script")
-        wait("1s")
-        send("f")
-        wait("1s")
 end
 
 function Healthcheck()
@@ -327,11 +331,25 @@ function BC.Invisiblemode()
 	send_down ("@", 1000)
 	send_up("F12",1000)
 	send_up("@",1000)
-	send_down ("{down}", 3000)
-	send_up("{down}")
+	for i = 1, 8 do
+		send_down ("{down}", 3000)
+		send_up("{down}")
+	end
  	wait(300)
     	send ("@")
  	wait(300)
+end
+function BC.Recorrection()
+	BC.Viewreset()
+ 	log("recorrecting zoom")
+	--send_down ("{down}", 3000)
+	--send_up("{down}")
+ 	--wait(1000)
+	for i = 1, 8 do
+		send_down ("{down}", 3000)
+		send_up("{down}")
+	end
+       wait(1000)
 end
 function BC.autobuff()
 	wait(300)
@@ -352,10 +370,11 @@ function BC.GotoStoneCity()
 	BC.attackBlazeSkullMarshal()
 	BC.autobuff()
     	--while not (bot.getLocation() == "Stone City" and bot.getLocation_cords(0) == "178" and bot.getLocation_cords(1) == "-515") do
+	if BC.StoneCity() == 0 then
         	wait(300)
 		send(stonecitycharm)
         	wait(5000)
-	--end
+	end
 end
 function BC.VastMountain()
     	if bot.getLocation() == "White Bear Village" and bot.getLocation_cords(0) == "847" and bot.getLocation_cords(1) == "-606"  then
@@ -451,6 +470,7 @@ function BC.MovingtoAltar()
 		log("Restarting Script")
 		BC.attack(attackskills)
 		BC.start()
+		log("test1")
 	end
 	wait(300)
 	send(windcontrolling)
@@ -459,7 +479,7 @@ function BC.MovingtoAltar()
 	        local nextCoords = coordinatesToCheck[i % #coordinatesToCheck + 1]
 		local resetclock = os.time()
 	        while not (bot.getLocation_cords(0) == nextCoords[1] and bot.getLocation_cords(1) == nextCoords[2])  do
-			if (BC.calculate_time_difference(resetclock, os.time()) <= 20) or (bot.getLocation() == "Stone City" ) then
+			if ( BC.calculate_time_difference(resetclock, os.time()) <= 20 ) then
 	           		if bot.getLocation_cords(0) == coords[1] and bot.getLocation_cords(1) == coords[2] then
 	                		wait(100)
 	                		right(nextCoords[3], nextCoords[4])
@@ -476,11 +496,14 @@ function BC.MovingtoAltar()
     				end
 				BC.attack(attackskills)
 				BC.start()
+				log("test2")
+				break
 			end
 	        end
 	    end
 end
 function BC.MovingtoBoss()
+	if  bot.getLocation() == "Secret Cemetery" then
 	   local coordinatesToCheck1 = {
 		{ "187", "-405", 0, 0 },
 		{ "185", "-406", 915, 116 },
@@ -497,7 +520,7 @@ function BC.MovingtoBoss()
 	        local nextCoords = coordinatesToCheck1[i % #coordinatesToCheck1 + 1]
 		local resetclock = os.time()
 	        while not (bot.getLocation_cords(0) == nextCoords[1] and bot.getLocation_cords(1) == nextCoords[2])  do
-			if (BC.calculate_time_difference(resetclock, os.time()) <= 20) or (bot.getLocation() == "Stone City" ) then
+			if ( BC.calculate_time_difference(resetclock, os.time()) <= 20 ) then
 	           		if bot.getLocation_cords(0) == coords[1] and bot.getLocation_cords(1) == coords[2] then
 	                		wait(100)
 	                		right(nextCoords[3], nextCoords[4])
@@ -517,38 +540,60 @@ function BC.MovingtoBoss()
 				BC.attackBlazeSkullMarshal()
 				BC.GotoStoneCity()
 				BC.start()
+				log("test3")
+				break
 			end
 	        end
 	    end
+	else
+		
+	end
 end	
 function BC.TeleporttoBoss()
 	log("Moving to Boss")
 	wait("3s")
-	if (not (bot.getLocation() == "Secret Cemetery")) then
-	log("AT Secret Altar Tele")
-		while bot.getLocation_cords(0) == "223" and bot.getLocation_cords(1) == "44" do
-	    		while bot.Dialogue() == 0 do
-	        		wait(100)
-				right(104, 144)
-	        		wait(100)
-	        		right(155, 104 )
-	        		wait(100)
-	       	 		right(156, 116 )
-	        		wait(100)
-	    		end
-	    		if bot.Dialogue() == 1 then
-	        		wait(100)
-	        		left(299, 330 )
-	        		wait(100)
-	    		end
-	    		wait("3s")
-	    		BC.Viewreset()
-	    		wait(100)
-		end
+	local resetclock = os.time()
+	if bot.getLocation() == "Secret Altar" then
+		if (not (bot.getLocation() == "Secret Cemetery")) then
+			log("AT Secret Altar Tele")
+			while bot.getLocation_cords(0) == "223" and bot.getLocation_cords(1) == "44" and BC.calculate_time_difference(resetclock, os.time()) <= 20 do
+	    			while BC.find_image("altarstonedialogue.bmp") == 0 and BC.calculate_time_difference(resetclock, os.time()) <= 20 do
+	        			wait(100)
+					right(104, 144)
+	        			wait(100)
+	        			right(155, 104 )
+	        			wait(100)
+	       	 			right(156, 116 )
+	        			wait(100)
+					BC.Viewreset()
+	    			end
+	    			if BC.find_image("altarstonedialogue.bmp") == 1 and BC.calculate_time_difference(resetclock, os.time()) <= 20 then
+	        			wait(100)
+	        			left(299, 330 )
+	        			wait(100)
+	    			end
+	    			wait("3s")
+	    			BC.Viewreset()
+	    			wait(100)
+			end
+			if BC.calculate_time_difference(resetclock, os.time()) > 20 then
+				BC.attackBlazeSkullMarshal()
+				BC.Recorrection()
+				BC.start()
+				log("test101")	
+			end
+		else
+			BC.attackBlazeSkullMarshal()
+			BC.Recorrection()
+			BC.start()
+			log("test102")
+		end	
 	else
-		BC.attackBlazeSkullMarshal()
-		BC.start()
-	end	
+			BC.attackBlazeSkullMarshal()
+			BC.Recorrection()
+			BC.start()
+			log("test103")
+	end
 end
 function BC.verifylocationInsideBC()
 	if bot.getLocation_cords(0) == "423" and bot.getLocation_cords(1) == "53" then
@@ -556,6 +601,7 @@ function BC.verifylocationInsideBC()
 	else
 		BC.attackBlazeSkullMarshal()
 		BC.start()
+		log("test5")
 	end		
 end
 function BC.InsideBC()
@@ -576,28 +622,24 @@ function BC.InsideBC()
 	end
 	wait("1s")
 	BC.MovingtoBoss()  
-	wait("1s")
+	send(mountkey) -- extra safety to mound down
 	BC.attackBlazeSkullMarshal()
-	BC.attack(attackskills)
+	BC.attackBlazeSkullMarshal()
     	wait("5s")
-    	BC.attack(attackskills)
+    	BC.attackBlazeSkullMarshal()
     	log("Finished Killing Boss")
   	BC.findcourage()
     	epoch2 = os.time()
 	log("Ended BC Time :", BC.convert_epoch_to_normal() )
 	log(BC.convertSecondsToTime(BC.calculate_time_difference(epoch1, epoch2))) 
-	BC.GotoStoneCity() 
+	wait(300)
+	send(stonecitycharm)
+        wait(5000) 
+	log("Ended")
 end
 
 
-function BC.convert_epoch_to_normal()
-	epoch_time = os.time()
-	return os.date("%Y-%m-%d %H:%M:%S", epoch)
-end
 
-function BC.calculate_time_difference(epoch1, epoch2)
-	return epoch2 - epoch1
-end
 function BC.convertSecondsToTime(seconds)
 	local hours = math.floor(seconds/3600)
 	local minutes = math.floor((seconds % 3600) / 60)
@@ -607,39 +649,29 @@ function BC.convertSecondsToTime(seconds)
 end
 function  BC.attackBlazeSkullMarshal()
 	if Fairy == "NO" then 
-	if bot.mount_status() == 1 then
-		wait(300)
-		send(mountkey)
-		wait("1s")
-		log("Mount down to attack")
- 	end
-	clock1= os.time()
-	while bot.Battle_Status() == 1 do
-		while not (BC.calculate_time_difference(clock1, os.time()) >= 20) do
-	    		--log(BC.calculate_time_difference(clock1, os.time()))
-            		wait(100)
-            		send(aoe)
-            		wait(100)
-	    		send("Tab")
-	    		wait(100)
-        	end
-        	if bot.targetHPpercent() > 0 then
-           		 wait(100)
-            		send(attackskills)
-            		wait(100)
-        	else
-            		wait(100)
-        		send("Tab")
-            		wait(100)
-        	end
-    	end
+		BC.unmount()
+		clock1= os.time()
+		while bot.Battle_Status() == 1 do
+			while not (BC.calculate_time_difference(clock1, os.time()) >= 20) do
+	    			--log(BC.calculate_time_difference(clock1, os.time()))
+            			wait(100)
+            			send(aoe)
+            			wait(100)
+	    			send("Tab")
+	    			wait(100)
+        		end
+        		if bot.targetHPpercent() > 0 then
+           		 	wait(100)
+            			send(attackskills)
+            			wait(100)
+        		else
+            			wait(100)
+        			send("Tab")
+            			wait(100)
+        		end
+    		end
 	else
-		if bot.mount_status() == 1 then
-			wait(300)
-			send(mountkey)
-			wait("1s")
-			log("Mount down to attack")
- 		end
+		BC.unmount()
 		clock1= os.time()
 		while bot.Battle_Status() == 1 do
 			while not (BC.calculate_time_difference(clock1, os.time()) >= 20) do
@@ -679,16 +711,18 @@ function  BC.attackBlazeSkullMarshal()
 end
 
 function BC.MovingfromStonecity()
-	while BC.StoneCity() == 1 and (timerclock() <= resettime) do
+	while BC.StoneCity() == 1 and (timerclock1(epoch1) <= resettime) do
 		log("In StoneCity")
 		BC.Viewreset()
-		while bot.Dialogue() == 0 and (timerclock() <= resettime) do
+		while BC.find_image("transportfaydialogue.bmp") == 0 and (timerclock1(epoch1) <= resettime) do
         	 	wait(300)
 			right(478, 508)
 		 	wait(300)
+			right(486, 457) 
+  			wait(300)        
 		end
 		wait("1s")
-		if bot.Dialogue() == 1 then
+		if BC.find_image("transportfaydialogue.bmp") == 1 then
         		wait(300)
 		        left(477, 324 )
 		 	wait(300)
@@ -696,29 +730,29 @@ function BC.MovingfromStonecity()
         		wait(300)
 		end
 		wait("3s")
-		while BC.StoneCity() == 1 and (timerclock() <= resettime) do 
+		if BC.find_image("transportfaydialogue.bmp") == 1 and (timerclock1(epoch1) <= resettime) then 
 			left(362, 655)
 			wait("1s")
+			BC.MovingfromStonecity()
+		else
+			log("Reached Vastmountain")
 		end
 	end
 end
 function BC.MovingfromVastmountain()
-	while BC.VastMountain() == 1 and (timerclock() <= resettime) do
+	while BC.VastMountain() == 1 and (timerclock1(epoch1) <= resettime) do
 		log("In VastMountain")
-		while bot.SellDialogue() == 0 and (timerclock() <= resettime) do
-	        	while bot.Dialogue() == 0 and (timerclock() <= resettime) do
+		wait(500)
+		while ( BC.find_image("sell.bmp") == 0 ) and ( timerclock1(epoch1) <= resettime ) do
+	        	while BC.find_image("blacksmithdialogue.bmp") == 0 and (timerclock1(epoch1) <= resettime) do
 				right(277, 251 )
 			end
 			wait("1s")
-		--while bot.Dialogue() == 1 do
-		--	wait(500)
-				left(279, 394  )
-		--	        wait(500)
-				break
-       		--	end
+			left(279, 394  )
+			break
 		end
    		wait("1s")
-		while bot.SellDialogue() == 1 and (timerclock() <= resettime) do
+		while BC.find_image("sell.bmp") == 1 and (timerclock1(epoch1) <= resettime) do
 			log("Selling Junk to clear space in inventory")
         		local q = 0
        	 		repeat
@@ -735,45 +769,49 @@ function BC.MovingfromVastmountain()
         		wait("1s")
         		left (469, 713 )
         		wait("1s")
-        		log("Sold Items")
+        		log("Sold Items..")
         		break
     		end
     		wait("1s")
-    		while bot.SellDialogue() ==1 and (timerclock() <= resettime) do
+    		while BC.find_image("sell.bmp") == 1 and (timerclock1(epoch1) <= resettime) do
         		wait("1s")
         		left (469, 713 )
         		wait("1s")
         		log("Sold Items")
     		end
-		--if bot.SellDialogue() ==1 then
-        	while bot.Dialogue() == 0 and (timerclock() <= resettime) do
+		BC.mount()
+        	while BC.find_image("transportfaydialogue.bmp") == 0 and (timerclock1(epoch1) <= resettime) do
                 	wait(300)
                 	right(471, 402 )
                 	wait(300)
         	end
-        	while bot.Dialogue() == 1 and (timerclock() <= resettime) do
+        	if BC.find_image("transportfaydialogue.bmp") == 1 and (timerclock1(epoch1) <= resettime) then
                 	log("Transport Dialogue" )
-                	wait(300)
+                	wait(1000)
             		left(282, 377 )
-                	wait(300)
-                	left(358, 655 )
-                	wait(300)
+                	wait(1000)
+                	--left(358, 655 )
+                	--wait(300)
         	end
         	wait("2s")
-        	--log ("clear")
+        	if BC.find_image("transportfaydialogue.bmp") == 1 and (timerclock1(epoch1) <= resettime) then 
+			left(362, 655)
+			wait("1s")
+			BC.MovingfromVastmountain()
+		else
+			log("Reached GhostDinWoods")
+		end
 	end
 end
 function BC.MovingfromGhostdinwoods()
-	while BC.Ghostdinwoods() == 1 and (timerclock() <= resettime) do
+	while BC.Ghostdinwoods() == 1 and (timerclock1(epoch1) <= resettime) do
     		log("In GhostDinWoods")
-    		BC.Addteam()
-		BC.mount()
-    		if bot.Surroundings() == 0 then
-        		wait(100)
-        		left (975, 57 )
-        		wait("1s")
+		
+		BC.clearscreen()
+    		if BC.find_image("surroundings.bmp") == 0 then
+        		BC.Surroundings()
     		end
-    		if bot.Surroundings() == 1 then
+    		if BC.find_image("surroundings.bmp") == 1 then
         		wait(100)
         		left(404, 194 ) --click on NPC tab
         		wait(100)
@@ -788,24 +826,56 @@ function BC.MovingfromGhostdinwoods()
 	end
 	left(417, 538 )   --close Surroundings
 	wait("1s")
-	while not (( bot.getLocation_cords(0) == "1395" and bot.getLocation_cords(1) == "-635" ) or ( timerclock() >= resettime)) do
+	BC.clearscreen()
+	wait(500)
+	while not (( bot.getLocation_cords(0) == "1395" and bot.getLocation_cords(1) == "-635" ) or ( timerclock1(epoch1) >= resettime)) do
     		wait("1s")
 	end
-	while (bot.getLocation_cords(0) == "1395" and bot.getLocation_cords(1) == "-635") and (timerclock() <= resettime) do
+	    		
+	while (bot.getLocation_cords(0) == "1395" and bot.getLocation_cords(1) == "-635") and (timerclock1(epoch1) <= resettime) do
     		log("Entrance of Bewitcher Cave")
-    		while bot.Dialogue() == 0  and (timerclock() <= resettime) do
+    		while BC.find_image("skullherald.bmp") == 0  and (timerclock1(epoch1) <= resettime) do
         		wait(100)
         		right(473, 420 )
         		wait(100)
     		end
     		wait(100)
-    		left(291, 363 )
-    		wait("2s")
+		while BC.find_image("skullherald.bmp") == 1  and (timerclock1(epoch1) <= resettime) do
+			while BC.teamstatus() == 0  do
+				BC.Addteam()
+			end
+        		wait(100)
+        		left(291, 363 )
+    			wait("2s")
+    		end
+
+	end
+end
+function BC.teamstatus()
+	if BC.find_image("monkteam.bmp") == 0 and BC.find_image("tamerteam.bmp") == 0 and BC.find_image("wizzMteam.bmp") == 0 and BC.find_image("wizzFteam.bmp") == 0 and BC.find_image("sinteam.bmp") == 0 and BC.find_image("fairyteam.bmp") == 0 then
+		return 0
+	else
+		return 1
 	end
 end
 function timerclock()
 	return BC.calculate_time_difference(epoch1, os.time())
 end
+function timerclock1(timername)
+	return BC.calculate_time_difference1(timername)
+end
+function BC.convert_epoch_to_normal()
+	epoch_time = os.time()
+	return os.date("%Y-%m-%d %H:%M:%S", epoch)
+end
+
+function BC.calculate_time_difference(epoch1, epoch2)
+	return epoch2 - epoch1
+end
+function BC.calculate_time_difference1(timername)
+	return os.time() - timername
+end
+
 function BC.clearscreen()
 	if BC.find_image("foelist.bmp") == 1 or BC.find_image("system.bmp") == 1 or  BC.find_image("friendlist.bmp") == 1 or BC.find_image("blocklist.bmp") == 1 or BC.find_image("surroundings.bmp") == 1 or BC.find_image("item.bmp") == 1 or BC.find_image("buy.bmp") == 1 then
 
@@ -819,18 +889,19 @@ end
 function BC.outsideBC()
 	BC.Viewreset()
 	BC.clearscreen()
+	BC.GotoStoneCity()
 	BC.verifystonecharm()
 	epoch1 = os.time()
 	resettime = 160
 	log("Started BC time :",BC.convert_epoch_to_normal())
-	BC.GotoStoneCity()
-	if timerclock() <= resettime then
+	
+	if timerclock1(epoch1) <= resettime then
 		BC.MovingfromStonecity()
 	end
-	if timerclock() <= resettime then
+	if timerclock1(epoch1) <= resettime then
 		BC.MovingfromVastmountain()	
 	end
-	if timerclock() <= resettime then
+	if timerclock1(epoch1) <= resettime then
 		BC.MovingfromGhostdinwoods()
 	end
 	wait("2s")
@@ -840,23 +911,25 @@ function BC.outsideBC()
 		log("Entering Cave failed so restarting...")
 		BC.attackBlazeSkullMarshal()
 		BC.start()
+		log("test6")
 	end
-	if timerclock() <= resettime then
+	if timerclock1(epoch1) <= resettime then
 		BC.InsideBC()
 	else	
 		BC.attackBlazeSkullMarshal()
 		BC.GotoStoneCity()
 		BC.start()
+		log("test7")
 	end
 end
+
 function BC.start()
     wait("1s")
     send(Petfood)
     wait("1s")
-    local s = 0
-    repeat
-        s = s + 1
+    starttime=os.time()
+    while timerclock1(starttime) < 3000 do
          BC.outsideBC()
-    until s == 5
+    end
 end
 return BC
